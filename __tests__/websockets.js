@@ -1,24 +1,45 @@
-const io = require('socket.io-client')
+const {io} = require('socket.io-client')
 const assert = require('assert')
-const expect = require('expect.js');
-
+const expect = require('expect');
+const fs = require('fs');
 
 describe('Websocket tests', () => {
   var socket;
+  var receiver;
+
+  beforeAll(function(done) {
+    process.env.NODE_ENV = 'test'
+    // fs.writeFile('../server/data/allLogs.json', JSON.stringify([
+    //   {
+    //     class: 'server',
+    //     type: '1',
+    //     timestamp: 'time',
+    //     log: 'test123',
+    //     stack: [],
+    //   }
+    // ]), () => {
+    //   db.reset();
+    //   done();
+    // });
+    
+    done();
+  })
 
   beforeEach(function(done) {
       // Setup
-      socket = io.connect('http://localhost:4732', {
-          'reconnection delay' : 0
-          , 'reopen delay' : 0
-          , 'force new connection' : true
+      socket = io('http://localhost:3861', {
+          transports: ['websocket']
       });
+      receiver = io('http://localhost:3861', {
+          transports: ['websocket']
+      });
+
       socket.on('connect', function() {
         console.log('worked...');
         done();
       });
       socket.on('disconnect', function() {
-        console.log('disconnected...');
+        console.log('disconnecte d...');
       })
   });
 
@@ -35,10 +56,33 @@ describe('Websocket tests', () => {
     });
 
   describe('testing test', () => {
-    it('Doing some things with indexOf()', function(done) {
-      expect([1, 2, 3].indexOf(5)).to.be.equal(-1);
-      expect([1, 2, 3].indexOf(0)).to.be.equal(-1);
-      done();
-    });
+    it('Should add a record', (done) => {
+      const data = {
+        class: 'server',
+        type: '2',
+        timestamp: 'time',
+        log: 'test456',
+        stack: [],
+      };
+
+      // console.log('inside test')
+      // socket.emit('display-logs')
+      receiver.on('display-logs', (message) => {
+        // console.log('message', message);
+        expect(message.allLogs[message.allLogs.length-1]).toEqual(data);
+        done();
+      })
+      socket.emit('store-logs', data)
+    })
+    it('Should delete logs', (done) => {
+      console.log('inside test')
+      // socket.emit('delete-logs')
+      receiver.on('display-logs', (message) => {
+        // console.log(message)
+        expect(message.allLogs.length).toBe(0);
+        done();
+      })
+      socket.emit('delete-logs');
+    })
   })
 })

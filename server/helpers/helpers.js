@@ -1,6 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
+let DATAFILE = '../data/allLogs.json'
+
+if (process.env.NODE_ENV === 'test') {
+  DATAFILE = `../data/allLogs_test.json`;
+  // marketList = JSON.parse(fs.readFileSync(writeLocation));
+}
+console.log(DATAFILE, process.env.NODE_ENV)
 // set the current file limit to split
 // 1000 for 1k byte
 const FILE_LIMIT = 10000000; // 10MB
@@ -36,7 +43,7 @@ const incrementFileNum = async () => {
 // method to get the current size of allLogs.json file
 helpers.getFileSize = async () => {
   // get the stats of the allLogs.json
-  const fileStats = await fs.statSync(path.resolve(__dirname, '../data/allLogs.json'));
+  const fileStats = await fs.statSync(path.resolve(__dirname, DATAFILE));
 
   // return the size of the file
   return fileStats.size;
@@ -53,12 +60,12 @@ helpers.splitFile = async (size) => {
     fileSplit = true;
 
     // rename the current allLogs.json file to allLogs{fheadFileNum}.json format
-    await fs.rename(path.resolve(__dirname, '../data/allLogs.json'), path.resolve(__dirname, `../data/allLogs${currentFileNum}.json`), () => {
+    await fs.rename(path.resolve(__dirname, DATAFILE), path.resolve(__dirname, `../data/allLogs${currentFileNum}.json`), () => {
       console.log('new file created');
     });
 
     // overwrite the allLogs.json file with empty array
-    await fs.writeFileSync(path.resolve(__dirname, '../data/allLogs.json'), JSON.stringify([]), 'utf8');
+    await fs.writeFileSync(path.resolve(__dirname, DATAFILE), JSON.stringify([]), 'utf8');
 
     // increment the fileTracker by one
     incrementFileNum();
@@ -88,7 +95,7 @@ helpers.deleteOldLogs = async () => {
 helpers.getAllLogs = async () => {
   // read allLogs.json file and parse JSON data
   const logs = await JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, "../data/allLogs.json"), "utf8")
+    fs.readFileSync(path.resolve(__dirname, DATAFILE), "utf8")
   );
 
   // error handling
@@ -141,7 +148,7 @@ helpers.storeLogs = async (logs) => {
 
   // write data that holds existing requests and new request to request.json
   fs.writeFileSync(
-    path.resolve(__dirname, "../data/allLogs.json"),
+    path.resolve(__dirname, DATAFILE),
     JSON.stringify(data, null, 2),
     "utf8"
   );
@@ -156,7 +163,7 @@ helpers.deleteLogs = async () => {
 
   // overwrite allLogs.json file with empty array
   const res = await fs.writeFileSync(
-    path.resolve(__dirname, "../data/allLogs.json"),
+    path.resolve(__dirname, DATAFILE),
     JSON.stringify([]),
     "utf8"
   );
@@ -165,11 +172,11 @@ helpers.deleteLogs = async () => {
 
 // method to create allLogs.json file if the file is not present
 helpers.checkLogFile = async () => {
-  fs.access(path.resolve(__dirname, "../data/allLogs.json"), (err) => {
+  fs.access(path.resolve(__dirname, DATAFILE), (err) => {
     // if there's error write the file
     if (err) {
       fs.writeFileSync(
-        path.resolve(__dirname, "../data/allLogs.json"),
+        path.resolve(__dirname, DATAFILE),
         JSON.stringify([]),
         "utf8"
       );
