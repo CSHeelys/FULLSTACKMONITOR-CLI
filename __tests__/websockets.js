@@ -39,15 +39,16 @@ describe('Websocket tests', () => {
         done();
       });
       socket.on('disconnect', function() {
-        console.log('disconnecte d...');
+        console.log('disconnected...');
       })
   });
 
   afterEach(function(done) {
         // Cleanup
-        if(socket.connected) {
+        if(socket.connected || receiver.connected) {
             console.log('disconnecting...');
             socket.disconnect();
+            receiver.disconnect();
         } else {
             // There will not be a connection unless you have done() in beforeEach, socket.on('connect'...)
             console.log('no connection to break...');
@@ -65,7 +66,7 @@ describe('Websocket tests', () => {
         stack: [],
       };
 
-      // console.log('inside test')
+      console.log('inside add test')
       // socket.emit('display-logs')
       receiver.on('display-logs', (message) => {
         // console.log('message', message);
@@ -74,8 +75,9 @@ describe('Websocket tests', () => {
       })
       socket.emit('store-logs', data)
     })
+    
     it('Should delete logs', (done) => {
-      console.log('inside test')
+      console.log('inside delete test')
       // socket.emit('delete-logs')
       receiver.on('display-logs', (message) => {
         // console.log(message)

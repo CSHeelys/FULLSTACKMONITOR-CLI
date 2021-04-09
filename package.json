@@ -12,7 +12,7 @@
     "start": "nodemon server/index.js",
     "react": "webpack serve --env NODE_ENV=development --mode development",
     "build": "npx webpack --config webpack.config.js",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest --detectOpenHandles",
     "production": "node server/index.js"
   },
   "nodemonConfig": {
