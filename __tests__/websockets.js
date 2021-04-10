@@ -1,26 +1,11 @@
 const {io} = require('socket.io-client')
-const assert = require('assert')
 const expect = require('expect');
-const fs = require('fs');
 
 describe('Websocket tests', () => {
   var socket;
-  var receiver;
 
   beforeAll(function(done) {
     process.env.NODE_ENV = 'test'
-    // fs.writeFile('../server/data/allLogs.json', JSON.stringify([
-    //   {
-    //     class: 'server',
-    //     type: '1',
-    //     timestamp: 'time',
-    //     log: 'test123',
-    //     stack: [],
-    //   }
-    // ]), () => {
-    //   db.reset();
-    //   done();
-    // });
     
     done();
   })
@@ -30,14 +15,12 @@ describe('Websocket tests', () => {
       socket = io('http://localhost:3861', {
           transports: ['websocket']
       });
-      receiver = io('http://localhost:3861', {
-          transports: ['websocket']
-      });
 
       socket.on('connect', function() {
         console.log('worked...');
         done();
       });
+
       socket.on('disconnect', function() {
         console.log('disconnected...');
       })
@@ -45,10 +28,9 @@ describe('Websocket tests', () => {
 
   afterEach(function(done) {
         // Cleanup
-        if(socket.connected || receiver.connected) {
+        if(socket.connected) {
             console.log('disconnecting...');
             socket.disconnect();
-            receiver.disconnect();
         } else {
             // There will not be a connection unless you have done() in beforeEach, socket.on('connect'...)
             console.log('no connection to break...');
@@ -57,7 +39,7 @@ describe('Websocket tests', () => {
     });
 
   describe('testing test', () => {
-    it('Should add a record', (done) => {
+    it('Should add a general data record', (done) => {
       const data = {
         class: 'server',
         type: '2',
@@ -66,25 +48,75 @@ describe('Websocket tests', () => {
         stack: [],
       };
 
-      console.log('inside add test')
-      // socket.emit('display-logs')
-      receiver.on('display-logs', (message) => {
-        // console.log('message', message);
+      socket.emit('store-logs', data);
+
+      socket.emit('get-initial-logs');
+
+      socket.on('display-logs', (message) => {
         expect(message.allLogs[message.allLogs.length-1]).toEqual(data);
         done();
       })
-      socket.emit('store-logs', data)
     })
     
+    it('Should add a new record for console log', (done) => {
+      const log = {
+        type: 'log',
+        args: 'ComponentMounted',
+        stack: ['ComponentMounted', 'MountedFromTesting'],
+        timestamp: 'Sat, 10 Apr 2021 20:32:13 GMT',
+      };
+
+      socket.emit('store-logs', log); 
+
+      socket.emit('get-initial-logs');
+
+      socket.on('display-logs', (message) => {
+        expect(message.allLogs[message.allLogs.length - 1].type).toEqual('log');
+        expect(message.allLogs[message.allLogs.length - 1].log).toEqual('setup');
+      });
+      
+      done();
+    });
+
+    it('Should add a new record for a request', (done) => {
+        const req = [
+            {
+              class: 'request',
+              timestamp: 'Sat, 10 Apr 2021 20:32:13 GMT',
+              fromIP: '13.66.139.159',
+              method: 'GET',
+              originalUri: '/api/',
+              uri: '/api/',
+              requestData: { filter: 'test' },
+            },
+            {
+              class: 'response',
+              timestamp: 'Sat, 10 Apr 2021 20:32:30 GMT',
+              responseData: { 'data' : 'test' },
+              responseStatus: 200,
+              referer: '',
+            },
+          ];
+
+      socket.emit('store-logs', req); 
+
+      socket.emit('get-initial-logs');
+
+      socket.on('display-logs', (message) => {
+        expect(message.allLogs[message.allLogs.length - 1].type).toEqual('log');
+        expect(message.allLogs[message.allLogs.length - 1].log).toEqual('setup');
+      });
+
+      done();
+    });
+
     it('Should delete logs', (done) => {
-      console.log('inside delete test')
-      // socket.emit('delete-logs')
-      receiver.on('display-logs', (message) => {
-        // console.log(message)
+      socket.emit('delete-logs');
+
+      socket.on('display-logs', (message) => {
         expect(message.allLogs.length).toBe(0);
         done();
       })
-      socket.emit('delete-logs');
-    })
+    });
   })
 })
