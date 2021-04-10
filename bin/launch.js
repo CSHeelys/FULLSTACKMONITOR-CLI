@@ -14,7 +14,7 @@ if (args.some((x) => x === '--help' || x === '--h')) {
     
     To log monitoring data on the server, you must install fullstack-monitor on one of your projects, using:
     
-    $ npm install fullstack-monitor
+    npm install fullstack-monitor
     
     Then when you run that project and the fullstack-monitor-cli server at the same time, logging and request
     data will be stored on the fullstack-monitor-cli server, and viewable on the fullstack-monitor-cli clients.
