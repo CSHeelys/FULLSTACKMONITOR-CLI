@@ -1,4 +1,9 @@
-const { getAllLogs, storeLogs, deleteLogs } = require('../helpers/helpers');
+const {
+  getAllLogs,
+  storeLogs,
+  deleteLogs,
+  killServer
+} = require('../helpers/helpers');
 const { io } = require("../../config");
 
 const loggerController = {};
@@ -26,6 +31,11 @@ loggerController.deleteLogs = async () => {
   const data = { allLogs: await deleteLogs() };
   // Update the FE accordingly
   io.emit('display-logs', data);
+};
+
+loggerController.killServer = async () => {
+  io.emit('server-killed');
+  killServer();
 };
 
 module.exports = loggerController;

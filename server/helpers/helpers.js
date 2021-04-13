@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const kill = require('kill-port');
 
 // set the current file limit to split
 // 1000 for 1k byte
@@ -161,6 +162,10 @@ helpers.deleteLogs = async () => {
     "utf8"
   );
   return [];
+};
+
+helpers.killServer = async () => {
+  kill(3861, 'tcp');
 };
 
 // method to create allLogs.json file if the file is not present

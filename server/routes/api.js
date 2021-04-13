@@ -12,6 +12,9 @@ function socketRouter() {
 
     // Delete logs
     socket.on('delete-logs', loggerController.deleteLogs);
+
+    // Kill server
+    socket.on('kill-server', loggerController.killServer);
   });
 }
 

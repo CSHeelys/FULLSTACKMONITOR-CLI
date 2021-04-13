@@ -3,7 +3,7 @@ import {
   Button, Tab, TabList, Tabs,
 } from "@chakra-ui/react";
 
-export default function TabsOptions({ deleteLogs, filterLogs }) {
+export default function TabsOptions({ deleteLogs, filterLogs, killServer }) {
   let initialMarginTop = '5px';
   if (window.innerWidth < 750) initialMarginTop = '12px';
   const [marginTop, setMarginTop] = useState(initialMarginTop);
@@ -44,6 +44,17 @@ export default function TabsOptions({ deleteLogs, filterLogs }) {
           }}
         >
           Delete Logs
+        </Button>
+        <Button
+          onClick={killServer}
+          colorScheme="red"
+          margin="5px"
+          style={{
+            minWidth: 'auto',
+            marginTop
+          }}
+        >
+          Kill Server
         </Button>
       </TabList>
     </Tabs>

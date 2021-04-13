@@ -83,6 +83,11 @@ class App extends Component {
     socket.emit("delete-logs", true);
   };
 
+  killServer = () => {
+    const { socket } = this.state;
+    socket.emit("kill-server");
+  }
+
   showMorelogInfo = (log) => {
     this.setState({
       activeLog: log,
@@ -161,6 +166,7 @@ class App extends Component {
         <IntelligentHeader
           filterLogs={this.filterLogs}
           deleteLogs={this.deleteLogs}
+          killServer={this.killServer}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
           showCustom={showCustom}
