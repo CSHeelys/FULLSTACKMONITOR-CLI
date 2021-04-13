@@ -1,1 +1,257 @@
-[]
+[
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-08 - 02:20:42.790",
+    "log": "Server listening on port: 3000",
+    "stack": [
+      "at Server.<anonymous> (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\server.js:76:11)",
+      "at Object.onceWrapper (events.js:421:28)",
+      "at Server.emit (events.js:315:20)",
+      "at emitListeningNT (net.js:1352:10)",
+      "at processTicksAndRejections (internal/process/task_queues.js:79:21)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:00.970",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "request",
+    "timestamp": "2021-04-10 - 16:47:01.001",
+    "fromIP": "::ffff:127.0.0.1",
+    "method": "GET",
+    "originalUri": "/api/",
+    "uri": "/",
+    "requestData": {}
+  },
+  {
+    "class": "response",
+    "timestamp": "2021-04-10 - 16:47:01.001",
+    "responseData": "",
+    "responseStatus": 304,
+    "referer": "http://localhost:8080/"
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:01.002",
+    "log": "GET CHARACTERS",
+    "stack": [
+      "at fileController.getCharacters (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\controllers\\fileController.js:8:11)",
+      "at Layer.handle [as handle_request] (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\layer.js:95:5)",
+      "at next (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\route.js:137:13)",
+      "at Route.dispatch (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\route.js:112:3)",
+      "at Layer.handle [as handle_request] (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\layer.js:95:5)",
+      "at C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\index.js:281:22",
+      "at Function.process_params (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\index.js:335:12)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-10 - 16:47:01.002",
+    "log": "getting favourite",
+    "stack": [
+      "at fileController.getFavs (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\controllers\\fileController.js:23:11)",
+      "at Layer.handle [as handle_request] (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\layer.js:95:5)",
+      "at next (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\route.js:137:13)",
+      "at fileController.getCharacters (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\server\\controllers\\fileController.js:17:10)",
+      "at Layer.handle [as handle_request] (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\layer.js:95:5)",
+      "at next (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\route.js:137:13)",
+      "at Route.dispatch (C:\\Users\\Admin\\Documents\\Coding\\github\\IterationFSM\\Example-Project\\node_modules\\express\\lib\\router\\route.js:112:3)"
+    ]
+  }
+]
