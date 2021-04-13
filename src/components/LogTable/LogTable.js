@@ -1,4 +1,5 @@
 import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   Table,
   Thead,
@@ -12,6 +13,18 @@ import Log from "./Log";
 import Request from "./Request";
 import Response from "./Response";
 import { getHeaderTitles } from "../../helpers/helpers";
+const TbodyMotion = motion(Tbody)
+const variants = {
+  hidden: {
+    opacity: 0
+  },
+  visible: (i) => ({
+    opacity: 1,
+    transition: {
+      delay: i * 0.01
+    }
+  })
+}
 
 export default function LogTable({
   activeLog, showMoreLogInfo, splitView, logs, logTypes
