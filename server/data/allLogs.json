@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-13 - 00:43:13.011",
+    "log": "Component mounted from App.jsx",
+    "stack": [
+      "at App.componentDidMount (webpack-internal:///./client/App.jsx:82:15)",
+      "at commitLifeCycles (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:19814:22)",
+      "at commitLayoutEffects (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22803:7)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at commitRootImpl (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:22541:9)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:34:48.817",
+    "log": "favClicked button clicked",
+    "stack": [
+      "at Characters.favClicked (webpack-internal:///./client/components/Characters.jsx:115:15)",
+      "at onClick (webpack-internal:///./client/components/CharacterCard.jsx:67:14)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at invokeGuardedCallbackAndCatchFirstError (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:306:25)",
+      "at executeDispatch (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:389:3)"
+    ]
+  },
+  {
+    "class": "request",
+    "timestamp": "2021-04-13 - 02:34:48.823",
+    "fromIP": "::ffff:127.0.0.1",
+    "method": "POST",
+    "originalUri": "/api/favs/2",
+    "uri": "/2",
+    "requestData": {
+      "id": "2"
+    }
+  },
+  {
+    "class": "response",
+    "timestamp": "2021-04-13 - 02:34:48.823",
+    "responseData": "{\"favs\":{\"2\":true,\"4\":true,\"6\":true,\"7\":true,\"9\":true,\"28\":true}}",
+    "responseStatus": 200,
+    "referer": "http://localhost:8080/"
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:34:48.823",
+    "log": "getting favourite",
+    "stack": [
+      "at fileController.getFavs (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:23:11)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at Route.dispatch (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:112:3)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at /Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/index.js:281:22",
+      "at param (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/index.js:354:14)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:34:48.824",
+    "log": "adding favourite",
+    "stack": [
+      "at fileController.addFav (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:41:11)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at fileController.getFavs (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:35:10)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at Route.dispatch (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:112:3)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:42:37.246",
+    "log": "favClicked button clicked",
+    "stack": [
+      "at Characters.favClicked (webpack-internal:///./client/components/Characters.jsx:115:15)",
+      "at onClick (webpack-internal:///./client/components/CharacterCard.jsx:67:14)",
+      "at HTMLUnknownElement.callCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:188:14)",
+      "at Object.invokeGuardedCallbackDev (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:237:16)",
+      "at invokeGuardedCallback (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:292:31)",
+      "at invokeGuardedCallbackAndCatchFirstError (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:306:25)",
+      "at executeDispatch (webpack-internal:///./node_modules/react-dom/cjs/react-dom.development.js:389:3)"
+    ]
+  },
+  {
+    "class": "request",
+    "timestamp": "2021-04-13 - 02:42:37.251",
+    "fromIP": "::ffff:127.0.0.1",
+    "method": "POST",
+    "originalUri": "/api/favs/1",
+    "uri": "/1",
+    "requestData": {
+      "id": "1"
+    }
+  },
+  {
+    "class": "response",
+    "timestamp": "2021-04-13 - 02:42:37.251",
+    "responseData": "{\"favs\":{\"1\":true,\"2\":true,\"4\":true,\"6\":true,\"7\":true,\"9\":true,\"28\":true}}",
+    "responseStatus": 200,
+    "referer": "http://localhost:8080/"
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:42:37.251",
+    "log": "getting favourite",
+    "stack": [
+      "at fileController.getFavs (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:23:11)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at Route.dispatch (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:112:3)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at /Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/index.js:281:22",
+      "at param (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/index.js:354:14)"
+    ]
+  },
+  {
+    "class": "server",
+    "type": "log",
+    "timestamp": "2021-04-13 - 02:42:37.251",
+    "log": "adding favourite",
+    "stack": [
+      "at fileController.addFav (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:41:11)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at fileController.getFavs (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/server/controllers/fileController.js:35:10)",
+      "at Layer.handle [as handle_request] (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/layer.js:95:5)",
+      "at next (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:137:13)",
+      "at Route.dispatch (/Users/xiaotongli/Documents/CCC/cs-projects/fs-monitor/Example-Project/node_modules/express/lib/router/route.js:112:3)"
+    ]
+  },
+  {
+    "class": "client",
+    "type": "error",
+    "timestamp": "2021-04-13 - 04:11:42.844",
+    "log": "[WDS] Disconnected!",
+    "stack": [
+      "at Object.close (webpack-internal:///./node_modules/webpack-dev-server/client/index.js?http://localhost:8080:172:9)",
+      "at SockJS.eval [as onclose] (webpack-internal:///./node_modules/webpack-dev-server/client/socket.js:26:16)",
+      "at SockJS.EventTarget.dispatchEvent (webpack-internal:///./node_modules/sockjs-client/dist/sockjs.js:170:20)",
+      "at SockJS.eval (webpack-internal:///./node_modules/sockjs-client/dist/sockjs.js:973:10)"
+    ]
+  }
+]

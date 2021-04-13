@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Tab, TabList, Tabs,
+  Button, Tab, TabList, Tabs
 } from "@chakra-ui/react";
 
 export default function TabsOptions({ deleteLogs, filterLogs }) {
@@ -33,6 +33,7 @@ export default function TabsOptions({ deleteLogs, filterLogs }) {
           <Tab onClick={() => filterLogs("request")}>Requests</Tab>
           <Tab onClick={() => filterLogs("response")}>Responses</Tab>
           <Tab onClick={() => filterLogs("custom")}>Custom</Tab>
+          <Tab onClick={() => filterLogs("dashboard")}>Dashboard</Tab>
         </div>
         <Button
           onClick={deleteLogs}
