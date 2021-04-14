@@ -39,7 +39,8 @@ class App extends Component {
         response: true,
       },
       showCustom: false,
-      displayConnectionError: false
+      displayConnectionError: false,
+      pause: false
     };
   }
 
@@ -87,6 +88,21 @@ class App extends Component {
     const { socket } = this.state;
     socket.emit("delete-logs", true);
   };
+
+  killServer = () => {
+    // console.log('kill-server');
+    const { socket } = this.state;
+    socket.emit('kill-server');
+  };
+
+  togglePause = () => {
+    const { socket, pause } = this.state;
+    console.log('pause', pause);
+    this.setState({
+      pause: !pause
+    });
+    socket.emit('toggle-pause');
+  }
 
   showMorelogInfo = (log) => {
     this.setState({
@@ -149,7 +165,8 @@ class App extends Component {
       logTypes,
       checkBoxes,
       activeLog,
-      displayConnectionError
+      displayConnectionError,
+      pause
     } = this.state;
     return (
       <div>
@@ -166,6 +183,9 @@ class App extends Component {
         <IntelligentHeader
           filterLogs={this.filterLogs}
           deleteLogs={this.deleteLogs}
+          killServer={this.killServer}
+          togglePause={this.togglePause}
+          pause={pause}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
           showCustom={showCustom}

@@ -14,6 +14,11 @@ function socketRouter() {
     // Delete logs
     socket.on('delete-logs', loggerController.deleteLogs);
 
+    // Kill server
+    socket.on('kill-server', loggerController.killServer);
+
+    // Pause server
+    socket.on('toggle-pause', loggerController.togglePause);
     // Get Hardware stats
     socket.on('get-cpu-info', hardwareInfoController.getCPUInfo);
   });

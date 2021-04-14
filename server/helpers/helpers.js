@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const kill = require('kill-port');
 
 let DATAFILE = '../data/allLogs.json'
 
@@ -167,6 +168,10 @@ helpers.deleteLogs = async () => {
     "utf8"
   );
   return [];
+};
+
+helpers.killServer = async () => {
+  kill(3861, 'tcp');
 };
 
 // method to create allLogs.json file if the file is not present
