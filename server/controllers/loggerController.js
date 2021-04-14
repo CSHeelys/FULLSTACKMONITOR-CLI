@@ -8,7 +8,6 @@ loggerController.getAllLogs = async () => {
   console.log('testing from inside log controller')
   const data = { allLogs: await getAllLogs() };
   // Send them to the FE
-  console.log('data', data)
   io.emit('display-logs', data);
 };
 
