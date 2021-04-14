@@ -15,6 +15,9 @@ function socketRouter() {
 
     // Kill server
     socket.on('kill-server', loggerController.killServer);
+
+    // Pause server
+    socket.on('toggle-pause', loggerController.togglePause);
   });
 }
 

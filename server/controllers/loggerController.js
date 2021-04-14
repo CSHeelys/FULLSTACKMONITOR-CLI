@@ -7,6 +7,7 @@ const {
 const { io } = require("../../config");
 
 const loggerController = {};
+let pause = false;
 
 loggerController.getAllLogs = async () => {
   // Get all the logs
@@ -16,14 +17,16 @@ loggerController.getAllLogs = async () => {
 };
 
 loggerController.storeLogs = async (logs) => {
-  // Store the new logs
-  const data = { allLogs: await storeLogs(logs) };
-  // Send the new logs to the FE
-  io.emit('display-logs', data);
-  // Send the new logs to the cmd app
-  io.emit('print-logs', logs);
-  // Let users project know logs have been successfully stored
-  io.emit('store-logs', 'success');
+  if (!pause) {
+    // Store the new logs
+    const data = { allLogs: await storeLogs(logs) };
+    // Send the new logs to the FE
+    io.emit('display-logs', data);
+    // Send the new logs to the cmd app
+    io.emit('print-logs', logs);
+    // Let users project know logs have been successfully stored
+    io.emit('store-logs', 'success');
+  }
 };
 
 loggerController.deleteLogs = async () => {
@@ -36,6 +39,11 @@ loggerController.deleteLogs = async () => {
 loggerController.killServer = async () => {
   io.emit('server-killed');
   killServer();
+};
+
+loggerController.togglePause = async () => {
+  io.emit('pause-toggled');
+  pause = !pause;
 };
 
 module.exports = loggerController;

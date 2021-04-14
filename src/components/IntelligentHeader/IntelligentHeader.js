@@ -6,6 +6,8 @@ export default function IntelligentHeader({
   filterLogs,
   deleteLogs,
   killServer,
+  togglePause,
+  pause,
   setCheckBoxes,
   checkBoxes,
   showCustom,
@@ -16,6 +18,8 @@ export default function IntelligentHeader({
         deleteLogs={deleteLogs}
         filterLogs={filterLogs}
         killServer={killServer}
+        togglePause={togglePause}
+        pause={pause}
       />
       {showCustom && (
         <CustomCheckboxes

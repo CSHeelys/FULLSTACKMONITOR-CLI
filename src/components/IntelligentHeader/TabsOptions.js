@@ -3,10 +3,9 @@ import {
   Button, Tab, TabList, Tabs,
 } from "@chakra-ui/react";
 
-export default function TabsOptions({ deleteLogs, filterLogs, killServer }) {
-  // console.log('killserver function', killServer);
-  // console.log('deleteLogs function', deleteLogs);
-
+export default function TabsOptions({
+  deleteLogs, filterLogs, killServer, togglePause, pause
+}) {
   let initialMarginTop = '5px';
   if (window.innerWidth < 750) initialMarginTop = '12px';
   const [marginTop, setMarginTop] = useState(initialMarginTop);
@@ -37,9 +36,21 @@ export default function TabsOptions({ deleteLogs, filterLogs, killServer }) {
           <Tab onClick={() => filterLogs("response")}>Responses</Tab>
           <Tab onClick={() => filterLogs("custom")}>Custom</Tab>
         </div>
+
+        <Button
+          onClick={togglePause}
+          colorScheme="gray"
+          margin="5px"
+          style={{
+            minWidth: 'auto',
+            marginTop
+          }}
+        >
+          {pause ? 'Pause' : 'Unpause'}
+        </Button>
         <Button
           onClick={deleteLogs}
-          colorScheme="red"
+          colorScheme="gray"
           margin="5px"
           style={{
             minWidth: 'auto',
@@ -57,7 +68,7 @@ export default function TabsOptions({ deleteLogs, filterLogs, killServer }) {
             marginTop
           }}
         >
-          Kill Server
+          End Server
         </Button>
       </TabList>
     </Tabs>
