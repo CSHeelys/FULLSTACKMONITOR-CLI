@@ -10,7 +10,7 @@ export default function IntelligentHeader({
   showCustom,
 }) {
   return (
-    <div>
+    <div className="sticky-header">
       <TabsOptions
         deleteLogs={deleteLogs}
         filterLogs={filterLogs}

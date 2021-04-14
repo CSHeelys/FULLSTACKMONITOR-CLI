@@ -13,18 +13,6 @@ import Log from "./Log";
 import Request from "./Request";
 import Response from "./Response";
 import { getHeaderTitles } from "../../helpers/helpers";
-const TbodyMotion = motion(Tbody)
-const variants = {
-  hidden: {
-    opacity: 0
-  },
-  visible: (i) => ({
-    opacity: 1,
-    transition: {
-      delay: i * 0.01
-    }
-  })
-}
 
 export default function LogTable({
   activeLog, showMoreLogInfo, splitView, logs, logTypes
@@ -32,10 +20,27 @@ export default function LogTable({
   const messengerBlue = useToken("colors", "messenger.400");
   // Assign titles dynamically depending on which types of logs the user is viewing
   const [colTitle1, colTitle2, colTitle3, colTitle4] = getHeaderTitles(logTypes);
+  const LogMotion = motion(Log)
+  const RequestMotion = motion(Request)
+  const ResponseMotion = motion(Response)
+  const variants = {
+    hidden: (i) => ({
+      opacity: 0,
+      y: -50 * i,
+    }),
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.025,
+      },
+    }),
+  };
+
   return (
-    <Table variant="simple">
+    <Table colorScheme="facebook" variant="simple">
       <Thead>
-        <Tr>
+        <Tr className="sticky-table">
           <Th>{colTitle1}</Th>
           <Th>{colTitle2}</Th>
           <Th>{colTitle3}</Th>
@@ -55,30 +60,78 @@ export default function LogTable({
             case "client":
             case "server":
               return (
-                <Log
+                <AnimatePresence>
+                <LogMotion
                   styleObj={styleObj}
+                  variants={{hidden: (i) => ({
+                    opacity: 0,
+                    y: -50 * i,
+                  }),
+                  visible: (i) => ({
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: i * 0.025,
+                    },
+                  })}}
+                  initial="hidden"
+                  animate="visible"
+                  custom={i}
                   log={log}
                   key={`${log.class}${log.type}${log.timestamp}${log.log}`}
                   splitView={() => splitView(log.id)}
                 />
+                </AnimatePresence>
               );
             case "request":
               return (
-                <Request
+                <AnimatePresence>
+                <RequestMotion
                   styleObj={styleObj}
+                  variants={{hidden: (i) => ({
+                    opacity: 0,
+                    y: -50 * i,
+                  }),
+                  visible: (i) => ({
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: i * 0.025,
+                    },
+                  })}}
+                  initial="hidden"
+                  animate="visible"
+                  custom={i}
                   request={log}
                   key={`${log.class}${log.method}${log.timestamp}${log.originalUri}`}
                   splitView={() => splitView(log.id)}
                 />
+                </AnimatePresence>
               );
             case "response":
               return (
-                <Response
+                <AnimatePresence>
+                <ResponseMotion
                   styleObj={styleObj}
                   response={log}
+                  variants={{hidden: (i) => ({
+                    opacity: 0,
+                    y: -50 * i,
+                  }),
+                  visible: (i) => ({
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: i * 0.025,
+                    },
+                  })}}
+                  initial="hidden"
+                  animate="visible"
+                  custom={i}
                   key={`${log.class}${log.responseStatus}${log.timestamp}`}
                   splitView={() => splitView(log.id)}
                 />
+                </AnimatePresence>
               );
             default:
               return <noscript />;
