@@ -4,6 +4,9 @@ import {
 } from "@chakra-ui/react";
 
 export default function TabsOptions({ deleteLogs, filterLogs, killServer }) {
+  // console.log('killserver function', killServer);
+  // console.log('deleteLogs function', deleteLogs);
+
   let initialMarginTop = '5px';
   if (window.innerWidth < 750) initialMarginTop = '12px';
   const [marginTop, setMarginTop] = useState(initialMarginTop);

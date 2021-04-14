@@ -84,8 +84,9 @@ class App extends Component {
   };
 
   killServer = () => {
+    console.log('kill-server');
     const { socket } = this.state;
-    socket.emit("kill-server");
+    socket.emit('kill-server');
   }
 
   showMorelogInfo = (log) => {
