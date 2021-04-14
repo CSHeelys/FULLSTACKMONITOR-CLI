@@ -7,7 +7,6 @@ if (process.env.NODE_ENV === 'test') {
   DATAFILE = `../data/allLogs_test.json`;
   // marketList = JSON.parse(fs.readFileSync(writeLocation));
 }
-console.log(DATAFILE, process.env.NODE_ENV)
 // set the current file limit to split
 // 1000 for 1k byte
 const FILE_LIMIT = 10000000; // 10MB
