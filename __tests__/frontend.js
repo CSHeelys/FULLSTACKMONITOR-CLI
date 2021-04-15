@@ -122,4 +122,5 @@ describe('React unit tests', () => {
       expect(wrapper.find('ul li').text()).toBe(activeLog.stack[0])
     });
   });
+
 });
