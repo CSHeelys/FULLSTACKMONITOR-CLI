@@ -38,6 +38,7 @@ class App extends Component {
         request: true,
         response: true,
       },
+      showLogs: true,
       showCustom: false,
       showDashboard: false,
       displayConnectionError: false
@@ -102,6 +103,7 @@ class App extends Component {
             request: true,
             response: true,
           },
+          showLogs: true,
           showCustom: false,
           showDashboard: false,
         });
@@ -115,6 +117,7 @@ class App extends Component {
           logTypes: {
             [type]: true,
           },
+          showLogs: true,
           showCustom: false,
           showDashboard: false,
         });
@@ -123,15 +126,16 @@ class App extends Component {
       case "custom":
         this.setState({
           logTypes: checkBoxes,
+          showLogs: true,
           showCustom: true,
           showDashboard: false,
         });
         break;
       case "dashboard":
         this.setState({
+          showLogs: false,
           showCustom: false,
           showDashboard: true,
-          // TODO: need to get rid of the logs as well
         });
         break;
       default:
@@ -151,6 +155,7 @@ class App extends Component {
     const {
       logs,
       showMoreLogInfo,
+      showLogs,
       showCustom,
       showDashboard,
       logTypes,
@@ -175,6 +180,7 @@ class App extends Component {
           deleteLogs={this.deleteLogs}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
+          showLogs={showLogs} // TODO: this doesn't do anything
           showCustom={showCustom}
           showDashboard={showDashboard}
           logs={logs}
