@@ -19,35 +19,33 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    // setInterval(this.updateData, 10000);
+    // TODO: make dynamically generating
+    // setInterval(this.updateData, 120000);
     this.updateData();
-
-    console.log('logs: ', this.props.logs);
   }
 
   updateData() {
-    const transformedData = {};
-    let minTime = '';
-    let maxTime = '';
-    const tempTimes = this.state.times;
-    const tempDataClient = this.state.dataClient;
-    const tempDataServer = this.state.dataServer;
-    const tempDataRequests = this.state.dataRequests;
+    // set times to be current minute minus 30
+    // TODO: see if there's a better way than regenerating
+    const tempTimes = [];
+    const currentTimeUnrounded = new Date(new Date().toISOString().split('T').join(' ')
+      .slice(0, -1));
+    const coeff = 1000 * 60 * 1;
+    let currentTime = new Date(Math.floor(currentTimeUnrounded.getTime() / coeff) * coeff);
 
-    // this.state.logs[0].timestamp.substring(13, 18)
-
-    // get starting time
-    if (this.state.times === []) {
-      minTime = new Date(this.state.logs[0].timestamp.replace(" - ", " "));
-      transformedData[minTime] = [0, 0, 0];
+    for (let i = 0; i < 30; i++) {
+      tempTimes.unshift(currentTime);
+      currentTime = new Date(currentTime.getTime() - coeff);
     }
 
-    maxTime = this.props.logs[this.props.logs.length - 1].timestamp.substring(13, 18);
+    // console.log('temptimes: ', tempTimes);
 
-    // aggregate data
+    // aggregating log data
+    // TODO: feature for CPU / memory use
+    const transformedData = {};
+
     for (let i = this.state.cursor; i < this.props.logs.length - 1; i++) {
-      const timestamp = new Date(this.props.logs[i].timestamp.replace(" - ", " "));
-      console.log('time: ', timestamp);
+      const timestamp = new Date(Math.floor(new Date(this.props.logs[i].timestamp.replace(" - ", " ")).getTime() / coeff) * coeff);
       if (!transformedData[timestamp]) {
         transformedData[timestamp] = [0, 0, 0];
       }
@@ -61,26 +59,35 @@ class Dashboard extends React.Component {
       }
     }
 
-    console.log('transformed data: ', transformedData);
+    // creating last 30 min of data
+    const tempDataClient = []; // this.state.dataClient;
+    const tempDataServer = []; // this.state.dataServer;
+    const tempDataRequests = []; // this.state.dataRequests;
 
-    // update into intervals
-    // for (let i = 0, i < maxTime; i++) {
+    for (let i = 0; i < tempTimes.length - 1; i++) {
+      if (!transformedData[tempTimes[i]]) {
+        tempDataClient.push(0);
+        tempDataServer.push(0);
+        tempDataRequests.push(0);
+      } else {
+        tempDataClient.push(transformedData[tempTimes[i]][0]);
+        tempDataServer.push(transformedData[tempTimes[i]][1]);
+        tempDataRequests.push(transformedData[tempTimes[i]][2]);
+      }
+    }
 
-    // }
-
+    // update state
     this.setState({
-      times: tempTimes.concat(Object.keys(transformedData)),
-      dataClient: tempDataClient.concat(Object.values(transformedData).map((el) => el[0])),
-      dataServer: tempDataServer.concat(Object.values(transformedData).map((el) => el[1])),
-      dataRequests: tempDataRequests.concat(Object.values(transformedData).map((el) => el[2])),
-      // cursor: this.props.logs.length - 1,
+      times: tempTimes,
+      dataClient: tempDataClient,
+      dataServer: tempDataServer,
+      dataRequests: tempDataRequests,
+      cursor: this.props.logs.length,
     }, () => { this.createGraph(); });
   }
 
   createGraph() {
     const ctx = document.getElementById("line-graph").getContext("2d");
-
-    console.log('state: ', this.state);
 
     const chart = new Chart(ctx, {
       type: 'line',
@@ -106,16 +113,17 @@ class Dashboard extends React.Component {
       options: {
         scales: {
           xAxes: [{
-            type: 'time',
-            display: true,
-            scaleLabel: {
-              display: true,
-              labelString: "Date",
-            }
+            type: 'time'
           }],
         },
         animation: {
-          duration: 0, // general animation time
+          duration: 0,
+        },
+        title: {
+          display: true,
+          position: 'top',
+          text: 'Logs and Requests in the Last 30 Minutes',
+          fontSize: 20
         },
       }
     });
@@ -123,7 +131,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="dashboard">
         <canvas id="line-graph" />
       </div>
     );
