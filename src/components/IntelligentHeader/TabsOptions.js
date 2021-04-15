@@ -46,7 +46,7 @@ export default function TabsOptions({
             marginTop
           }}
         >
-          {pause ? 'Pause' : 'Unpause'}
+          {pause ? 'Unpause' : 'Pause'}
         </Button>
         <Button
           onClick={deleteLogs}

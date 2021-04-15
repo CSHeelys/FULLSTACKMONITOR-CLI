@@ -19,6 +19,7 @@ function socketRouter() {
 
     // Pause server
     socket.on('toggle-pause', loggerController.togglePause);
+
     // Get Hardware stats
     socket.on('get-cpu-info', hardwareInfoController.getCPUInfo);
   });
