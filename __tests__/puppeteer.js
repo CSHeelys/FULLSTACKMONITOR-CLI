@@ -8,9 +8,11 @@ describe('Front-end Integration/Features', () => {
   let page;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+    browser = await puppeteer.launch(
+      {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      }
+    );
     // console.log('browser', browser);
   });
 
@@ -28,17 +30,12 @@ describe('Front-end Integration/Features', () => {
   });
 
   describe('Initial display', () => {
-    it('loads successfuly', async () => {
+    it('loads app successfuly', async () => {
       // console.log('running first test');
       await page.waitForSelector('#app');
       const app = await page.$eval('#app', (el) => el);
       // console.log('app', app);
       expect(app).toBeTruthy();
     });
-
-    // it('properly filters requests', async () => {
-    //   await page.waitForSelector('#app');
-
-    // })
   });
 });

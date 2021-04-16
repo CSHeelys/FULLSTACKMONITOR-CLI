@@ -38,6 +38,7 @@ export default function TabsOptions({
         </div>
 
         <Button
+          id="pauseButton"
           onClick={togglePause}
           colorScheme="gray"
           margin="5px"
@@ -49,6 +50,7 @@ export default function TabsOptions({
           {pause ? 'Unpause' : 'Pause'}
         </Button>
         <Button
+          id="deleteLogButton"
           onClick={deleteLogs}
           colorScheme="gray"
           margin="5px"
@@ -60,6 +62,7 @@ export default function TabsOptions({
           Delete Logs
         </Button>
         <Button
+          id="killServerButton"
           onClick={killServer}
           colorScheme="red"
           margin="5px"
