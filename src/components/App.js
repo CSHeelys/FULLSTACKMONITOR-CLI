@@ -54,7 +54,7 @@ class App extends Component {
     });
 
     socket.on('send-hardware-info', (info) => {
-      console.log(info);
+      // console.log(info);
     });
     socket.emit("get-initial-logs");
     socket.emit('get-cpu-info');

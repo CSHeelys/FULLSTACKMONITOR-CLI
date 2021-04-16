@@ -11,13 +11,14 @@ let pause = false;
 
 loggerController.getAllLogs = async () => {
   // Get all the logs
-  console.log('testing from inside log controller')
+  // console.log('testing from inside log controller')
   const data = { allLogs: await getAllLogs() };
   // Send them to the FE
   io.emit('display-logs', data);
 };
 
 loggerController.storeLogs = async (logs) => {
+  console.log('logs from loggerController.storeLogs');
   if (!pause) {
     // Store the new logs
     const data = { allLogs: await storeLogs(logs) };

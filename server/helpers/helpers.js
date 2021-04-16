@@ -2,7 +2,11 @@ const fs = require("fs");
 const path = require("path");
 const kill = require('kill-port');
 
-let DATAFILE = '../data/allLogs.json'
+let DATAFILE = '../data/allLogs.json';
+
+const { serverPort } = require("../../config");
+
+const port = process.env.port || serverPort;
 
 if (process.env.NODE_ENV === 'test') {
   DATAFILE = `../data/allLogs_test.json`;
@@ -121,6 +125,8 @@ helpers.storeLogs = async (logs) => {
     data = [];
   }
 
+  // console.log('data in helpers.storeLogs', data);
+
   if (!logs) throw Error("./server/helpers/helpers: storeLogs: No logs found.");
 
   // check if incoming logs are in array format
@@ -171,7 +177,7 @@ helpers.deleteLogs = async () => {
 };
 
 helpers.killServer = async () => {
-  kill(3861, 'tcp');
+  kill(port, 'tcp');
 };
 
 // method to create allLogs.json file if the file is not present
