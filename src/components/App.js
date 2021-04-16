@@ -38,7 +38,9 @@ class App extends Component {
         request: true,
         response: true,
       },
+      showLogs: true,
       showCustom: false,
+      showDashboard: false,
       displayConnectionError: false,
       pause: false
     };
@@ -122,7 +124,9 @@ class App extends Component {
             request: true,
             response: true,
           },
+          showLogs: true,
           showCustom: false,
+          showDashboard: false,
         });
         break;
       // Otherwise set logTypes to true just for the specified log type
@@ -134,14 +138,25 @@ class App extends Component {
           logTypes: {
             [type]: true,
           },
+          showLogs: true,
           showCustom: false,
+          showDashboard: false,
         });
         break;
       // If the user selects the custom tab, set logTypes to be equal to the value of checkBoxes
       case "custom":
         this.setState({
           logTypes: checkBoxes,
+          showLogs: true,
           showCustom: true,
+          showDashboard: false,
+        });
+        break;
+      case "dashboard":
+        this.setState({
+          showLogs: false,
+          showCustom: false,
+          showDashboard: true,
         });
         break;
       default:
@@ -161,7 +176,9 @@ class App extends Component {
     const {
       logs,
       showMoreLogInfo,
+      showLogs,
       showCustom,
+      showDashboard,
       logTypes,
       checkBoxes,
       activeLog,
@@ -188,7 +205,10 @@ class App extends Component {
           pause={pause}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
+          showLogs={showLogs} // TODO: this doesn't do anything
           showCustom={showCustom}
+          showDashboard={showDashboard}
+          logs={logs}
         />
         <LogTable
           logTypes={logTypes}

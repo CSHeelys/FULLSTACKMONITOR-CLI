@@ -1,16 +1,19 @@
 import React from "react";
 import CustomCheckboxes from "./CustomCheckboxes";
 import TabsOptions from "./TabsOptions";
+import Dashboard from "./Dashboard";
 
 export default function IntelligentHeader({
   filterLogs,
   deleteLogs,
+  logs,
   killServer,
   togglePause,
   pause,
   setCheckBoxes,
   checkBoxes,
   showCustom,
+  showDashboard
 }) {
   return (
     <div>
@@ -25,6 +28,11 @@ export default function IntelligentHeader({
         <CustomCheckboxes
           checkBoxes={checkBoxes}
           setCheckBoxes={setCheckBoxes}
+        />
+      )}
+      {showDashboard && (
+        <Dashboard
+          logs={logs}
         />
       )}
     </div>
