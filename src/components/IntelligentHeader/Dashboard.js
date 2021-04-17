@@ -5,6 +5,10 @@
 import { Chart } from "chart.js";
 import React, { Component } from "react";
 
+function replaceGlobally(original, searchTxt, replaceTxt) {
+  const regex = new RegExp(searchTxt, 'g');
+  return original.replace(regex, replaceTxt);
+}
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +25,9 @@ class Dashboard extends React.Component {
       coeff: 60000,
     };
 
+    let logsChart;
+    let CPUChart;
+
     this.initializeData = this.initializeData.bind(this);
     this.updateData = this.updateData.bind(this);
     this.createGraphs = this.createGraphs.bind(this);
@@ -28,8 +35,16 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.initializeData();
-    window.setInterval(this.updateData, 1000);
+    // this.updateData();
+    window.setInterval(this.updateData, 2000);
   }
+
+  // componentDidUpdate() {
+  //   console.log('change occurred');
+  //   if (this.props.logs.length > this.state.cursor) {
+  //     this.updateData();
+  //   }
+  // }
 
   initializeData() {
     // creating first set of 30 timestamps
@@ -126,6 +141,8 @@ class Dashboard extends React.Component {
     const tempTimes = this.state.times;
     const lastTime = tempTimes[tempTimes.length - 1];
 
+    console.log('logs: ', this.props.logs);
+
     const tempDataClient = this.state.dataClient;
     const tempDataServer = this.state.dataServer;
     const tempDataRequests = this.state.dataRequests;
@@ -138,11 +155,30 @@ class Dashboard extends React.Component {
     const tempMemTotal = this.state.memTotal;
     const tempHardwareCount = this.state.hardwareCount;
 
+    // sort reverse
+    const logsCopy = [...this.props.logs];
+
+    logsCopy.sort((a, b) => {
+      const hourA = `${replaceGlobally(
+        a.timestamp.slice(-12),
+        ':',
+        ''
+      )}`;
+      const hourB = `${replaceGlobally(
+        b.timestamp.slice(-12),
+        ':',
+        ''
+      )}`;
+      return hourA - hourB;
+    });
+
+    console.log('logsCopy: ', logsCopy);
+
     // get latest logs
-    for (let i = this.state.cursorLogs; i < this.props.logs.length; i++) {
+    for (let i = this.state.cursorLogs; i < logsCopy.length; i++) {
       const timestamp = new Date(
         Math.floor(
-          new Date(this.props.logs[i].timestamp.replace(" - ", " ")).getTime()
+          new Date(logsCopy[i].timestamp.replace(" - ", " ")).getTime()
             / this.state.coeff
         ) * this.state.coeff
       );
@@ -152,11 +188,11 @@ class Dashboard extends React.Component {
         transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
-      if (this.props.logs[i].class === "client") {
+      if (logsCopy[i].class === "client") {
         transformedData[timestamp][0] += 1;
-      } else if (this.props.logs[i].class === "server") {
+      } else if (logsCopy[i].class === "server") {
         transformedData[timestamp][1] += 1;
-      } else if (this.props.logs[i].class === "request") {
+      } else if (logsCopy[i].class === "request") {
         transformedData[timestamp][2] += 1;
       }
     }
@@ -174,9 +210,6 @@ class Dashboard extends React.Component {
         // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
         transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
-
-      console.log('cpu ', this.props.hardwareInfo[i].cpuUsage);
-      console.log('mem ', this.props.hardwareInfo[i].memPercent);
 
       transformedData[timestamp][5] += this.props.hardwareInfo[i].cpuUsage;
       transformedData[timestamp][6] += this.props.hardwareInfo[i].memPercent;
@@ -230,19 +263,20 @@ class Dashboard extends React.Component {
         dataCPU: tempDataCPU,
         dataMem: tempDataMem,
         aggdata: transformedData,
-        cursorLogs: this.props.logs.length,
+        cursorLogs: logsCopy.length,
         cursorHardware: this.props.hardwareInfo.length,
       },
       () => {
-        this.createGraphs();
+        this.logsChart.update();
+        this.CPUChart.update();
       }
     );
   }
 
   createGraphs() {
-    const ctx = document.getElementById("logs-graph").getContext("2d");
+    const ctxlogs = document.getElementById("logs-graph").getContext("2d");
 
-    const chart = new Chart(ctx, {
+    this.logsChart = new Chart(ctxlogs, {
       type: "line",
       data: {
         labels: this.state.times,
@@ -287,9 +321,9 @@ class Dashboard extends React.Component {
       },
     });
 
-    const cty = document.getElementById("cpu-graph").getContext("2d");
+    const ctxcpu = document.getElementById("cpu-graph").getContext("2d");
 
-    const charty = new Chart(cty, {
+    this.CPUChart = new Chart(ctxcpu, {
       type: "line",
       data: {
         labels: this.state.times,
