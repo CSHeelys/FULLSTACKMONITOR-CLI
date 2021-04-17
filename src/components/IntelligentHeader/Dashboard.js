@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     this.initializeData();
     // this.updateData();
-    window.setInterval(this.updateData, 1000);
+    window.setInterval(this.updateData, 2000);
   }
 
   // componentDidUpdate() {
@@ -156,7 +156,9 @@ class Dashboard extends React.Component {
     const tempHardwareCount = this.state.hardwareCount;
 
     // sort reverse
-    this.props.logs.sort((a, b) => {
+    const logsCopy = [...this.props.logs];
+
+    logsCopy.sort((a, b) => {
       const hourA = `${replaceGlobally(
         a.timestamp.slice(-12),
         ':',
@@ -170,11 +172,13 @@ class Dashboard extends React.Component {
       return hourA - hourB;
     });
 
+    console.log('logsCopy: ', logsCopy);
+
     // get latest logs
-    for (let i = this.state.cursorLogs; i < this.props.logs.length; i++) {
+    for (let i = this.state.cursorLogs; i < logsCopy.length; i++) {
       const timestamp = new Date(
         Math.floor(
-          new Date(this.props.logs[i].timestamp.replace(" - ", " ")).getTime()
+          new Date(logsCopy[i].timestamp.replace(" - ", " ")).getTime()
             / this.state.coeff
         ) * this.state.coeff
       );
@@ -184,11 +188,11 @@ class Dashboard extends React.Component {
         transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
-      if (this.props.logs[i].class === "client") {
+      if (logsCopy[i].class === "client") {
         transformedData[timestamp][0] += 1;
-      } else if (this.props.logs[i].class === "server") {
+      } else if (logsCopy[i].class === "server") {
         transformedData[timestamp][1] += 1;
-      } else if (this.props.logs[i].class === "request") {
+      } else if (logsCopy[i].class === "request") {
         transformedData[timestamp][2] += 1;
       }
     }
@@ -259,7 +263,7 @@ class Dashboard extends React.Component {
         dataCPU: tempDataCPU,
         dataMem: tempDataMem,
         aggdata: transformedData,
-        cursorLogs: this.props.logs.length,
+        cursorLogs: logsCopy.length,
         cursorHardware: this.props.hardwareInfo.length,
       },
       () => {
