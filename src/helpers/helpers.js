@@ -16,27 +16,27 @@ function isNoDataLog(data) {
 
 export const sanitizeAndShortenRequestResponseData = (data) => {
   let dataString = JSON.stringify(data);
-  dataString = isNoDataReq(dataString) ? NO_DATA_RESPONSE : dataString;
+  dataString = isNoDataReq(dataString) ? NO_DATA_RESPONSE : dataString.replace(/^"(.*)"$/, '$1');
   if (dataString.length > MAX_STRING_LENGTH) dataString = `${dataString.slice(0, MAX_STRING_LENGTH)}...`;
   return dataString;
 };
 
 export const sanitizeAndShortenLogData = (data) => {
   let dataString = JSON.stringify(data);
-  dataString = isNoDataLog(dataString) ? NO_DATA_RESPONSE : dataString;
+  dataString = isNoDataLog(dataString) ? NO_DATA_RESPONSE : dataString.replace(/^"(.*)"$/, '$1');
   if (dataString.length > MAX_STRING_LENGTH) dataString = `${dataString.slice(0, MAX_STRING_LENGTH)}...`;
   return dataString;
 };
 
 export const sanitizeRequestResponseData = (data) => {
   let dataString = JSON.stringify(data);
-  dataString = isNoDataReq(dataString) ? NO_DATA_RESPONSE : dataString;
+  dataString = isNoDataReq(dataString) ? NO_DATA_RESPONSE : dataString.replace(/^"(.*)"$/, '$1');
   return dataString;
 };
 
 export const sanitizeLogData = (data) => {
   let dataString = JSON.stringify(data);
-  dataString = isNoDataLog(dataString) ? NO_DATA_RESPONSE : dataString;
+  dataString = isNoDataLog(dataString) ? NO_DATA_RESPONSE : dataString.replace(/^"(.*)"$/, '$1');
   return dataString;
 };
 
