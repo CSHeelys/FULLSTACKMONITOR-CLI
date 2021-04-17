@@ -16,7 +16,7 @@ export default function IntelligentHeader({
   showDashboard
 }) {
   return (
-    <div>
+    <div className="sticky-header">
       <TabsOptions
         deleteLogs={deleteLogs}
         filterLogs={filterLogs}
