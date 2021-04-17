@@ -38,8 +38,11 @@ class App extends Component {
         request: true,
         response: true,
       },
+      showLogs: true,
       showCustom: false,
-      displayConnectionError: false
+      showDashboard: false,
+      displayConnectionError: false,
+      pause: false
     };
   }
 
@@ -51,7 +54,12 @@ class App extends Component {
     socket.on('connect_error', () => {
       this.setState({ displayConnectionError: true });
     });
+
+    socket.on('send-hardware-info', (info) => {
+      console.log(info);
+    });
     socket.emit("get-initial-logs");
+    socket.emit('get-cpu-info');
   }
 
   componentWillUnmount() {
@@ -83,6 +91,21 @@ class App extends Component {
     socket.emit("delete-logs", true);
   };
 
+  killServer = () => {
+    // console.log('kill-server');
+    const { socket } = this.state;
+    socket.emit('kill-server');
+  };
+
+  togglePause = () => {
+    const { socket, pause } = this.state;
+    console.log('pause', pause);
+    this.setState({
+      pause: !pause
+    });
+    socket.emit('toggle-pause');
+  }
+
   showMorelogInfo = (log) => {
     this.setState({
       activeLog: log,
@@ -101,7 +124,9 @@ class App extends Component {
             request: true,
             response: true,
           },
+          showLogs: true,
           showCustom: false,
+          showDashboard: false,
         });
         break;
       // Otherwise set logTypes to true just for the specified log type
@@ -113,14 +138,25 @@ class App extends Component {
           logTypes: {
             [type]: true,
           },
+          showLogs: true,
           showCustom: false,
+          showDashboard: false,
         });
         break;
       // If the user selects the custom tab, set logTypes to be equal to the value of checkBoxes
       case "custom":
         this.setState({
           logTypes: checkBoxes,
+          showLogs: true,
           showCustom: true,
+          showDashboard: false,
+        });
+        break;
+      case "dashboard":
+        this.setState({
+          showLogs: false,
+          showCustom: false,
+          showDashboard: true,
         });
         break;
       default:
@@ -140,11 +176,14 @@ class App extends Component {
     const {
       logs,
       showMoreLogInfo,
+      showLogs,
       showCustom,
+      showDashboard,
       logTypes,
       checkBoxes,
       activeLog,
-      displayConnectionError
+      displayConnectionError,
+      pause
     } = this.state;
     return (
       <div>
@@ -161,9 +200,15 @@ class App extends Component {
         <IntelligentHeader
           filterLogs={this.filterLogs}
           deleteLogs={this.deleteLogs}
+          killServer={this.killServer}
+          togglePause={this.togglePause}
+          pause={pause}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
+          showLogs={showLogs} // TODO: this doesn't do anything
           showCustom={showCustom}
+          showDashboard={showDashboard}
+          logs={logs}
         />
         <LogTable
           logTypes={logTypes}

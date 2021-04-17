@@ -15,4 +15,6 @@
   top: 0;
   z-index: 100;
   background: white;
+.dashboard {
+  margin-top: 20px;
 }

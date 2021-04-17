@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
+const kill = require('kill-port');
 
 let DATAFILE = '../data/allLogs.json';
 
@@ -13,6 +14,7 @@ const loggingOrder = new Map();
 let loggingCount = 0;
 
 // console.log(DATAFILE, process.env.NODE_ENV)
+=======
 // set the current file limit to split
 // 1000 for 1k byte
 const FILE_LIMIT = 10000000; // 10MB
@@ -234,6 +236,10 @@ helpers.deleteLogs = async () => {
     'utf8'
   );
   return [];
+};
+
+helpers.killServer = async () => {
+  kill(3861, 'tcp');
 };
 
 // method to create allLogs.json file if the file is not present
