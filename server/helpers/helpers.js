@@ -1,13 +1,19 @@
 const fs = require("fs");
 const path = require("path");
+const kill = require('kill-port');
 
-let DATAFILE = '../data/allLogs.json'
+let DATAFILE = '../data/allLogs.json';
 
 if (process.env.NODE_ENV === 'test') {
   DATAFILE = `../data/allLogs_test.json`;
   // marketList = JSON.parse(fs.readFileSync(writeLocation));
 }
-console.log(DATAFILE, process.env.NODE_ENV)
+
+// new map so we can keep track of the order of items coming in
+const loggingOrder = new Map();
+let loggingCount = 0;
+
+// console.log(DATAFILE, process.env.NODE_ENV)
 // set the current file limit to split
 // 1000 for 1k byte
 const FILE_LIMIT = 10000000; // 10MB
@@ -20,7 +26,10 @@ const helpers = {};
 // method to get current HeadFile Number
 const getHeadFileNum = async () => {
   // read current headFileNum from headFileNum.json file
-  const currentHeadFileNum = await fs.readFileSync(path.resolve(__dirname, "../data/headFileNum.json"), "utf8");
+  const currentHeadFileNum = await fs.readFileSync(
+    path.resolve(__dirname, '../data/headFileNum.json'),
+    'utf8'
+  );
 
   return currentHeadFileNum;
 };
@@ -28,7 +37,11 @@ const getHeadFileNum = async () => {
 // method to update headFileNum back to headFileNum.json
 const updateHeadFileNum = async (fileNum) => {
   // write file Number to headFileNum.json file
-  fs.writeFileSync(path.resolve(__dirname, '../data/headFileNum.json'), JSON.parse(fileNum), 'utf8');
+  fs.writeFileSync(
+    path.resolve(__dirname, '../data/headFileNum.json'),
+    JSON.parse(fileNum),
+    'utf8'
+  );
 };
 
 // method increment currentHeadFileNum by one
@@ -60,12 +73,20 @@ helpers.splitFile = async (size) => {
     fileSplit = true;
 
     // rename the current allLogs.json file to allLogs{fheadFileNum}.json format
-    await fs.rename(path.resolve(__dirname, DATAFILE), path.resolve(__dirname, `../data/allLogs${currentFileNum}.json`), () => {
-      console.log('new file created');
-    });
+    await fs.rename(
+      path.resolve(__dirname, DATAFILE),
+      path.resolve(__dirname, `../data/allLogs${currentFileNum}.json`),
+      () => {
+        console.log('new file created');
+      }
+    );
 
     // overwrite the allLogs.json file with empty array
-    await fs.writeFileSync(path.resolve(__dirname, DATAFILE), JSON.stringify([]), 'utf8');
+    await fs.writeFileSync(
+      path.resolve(__dirname, DATAFILE),
+      JSON.stringify([]),
+      'utf8'
+    );
 
     // increment the fileTracker by one
     incrementFileNum();
@@ -77,7 +98,7 @@ helpers.splitFile = async (size) => {
 helpers.deleteOldLogs = async () => {
   // read the current value of headFileNum
   const headFile = await getHeadFileNum();
-
+  loggingOrder.clear();
   // iterate through the STARTING_NUM to headFile
   for (let i = STARTING_NUM; i < headFile; i++) {
     try {
@@ -95,11 +116,25 @@ helpers.deleteOldLogs = async () => {
 helpers.getAllLogs = async () => {
   // read allLogs.json file and parse JSON data
   const logs = await JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, DATAFILE), "utf8")
+    fs.readFileSync(path.resolve(__dirname, DATAFILE), 'utf8')
   );
 
+  // gets time log arrived so it can be displayed in the correct order
+  // the counter will ensure the order is correct during the sort
+  for (const log of logs) {
+    if (!loggingOrder.has(`${log.timestamp}${log.class}${log.log || ''}`) || !log.arrivedAt) {
+      loggingOrder.set(`${log.timestamp}${log.class}${log.log || ''}`, (loggingCount += 1));
+      log.arrivedAt = new Date()
+        .toISOString()
+        .split('T')
+        .join(' - ')
+        .slice(0, -1);
+    }
+  }
+
   // error handling
-  if (!logs) throw Error("./server/helpers/helpers: getAllLogs: No logs found.");
+  if (!logs)
+    throw Error('./server/helpers/helpers: getAllLogs: No logs found.');
 
   return logs;
 };
@@ -121,14 +156,35 @@ helpers.storeLogs = async (logs) => {
     data = [];
   }
 
-  if (!logs) throw Error("./server/helpers/helpers: storeLogs: No logs found.");
+  if (!logs) throw Error('./server/helpers/helpers: storeLogs: No logs found.');
 
   // check if incoming logs are in array format
   if (Array.isArray(logs)) {
     // push individual array element into existing data
-    logs.forEach((log) => data.push(log));
+    logs.forEach((log) => {
+      if (!loggingOrder.has(`${log.timestamp}${log.class}${log.log || ''}`) || !log.arrivedAt) {
+        loggingOrder.set(`${log.timestamp}${log.class}${log.log || ''}`, (loggingCount += 1));
+        log.arrivedAt = new Date()
+          .toISOString()
+          .split('T')
+          .join(' - ')
+          .slice(0, -1);
+      }
+      data.push(log);
+    });
   } else {
     // if incoming logs are not in array format, push directly into existing data
+    if (
+      !loggingOrder.has(`${logs.timestamp}${logs.class}${logs.log || ''}`) ||
+      !logs.arrivedAt
+    ) {
+      loggingOrder.set(`${logs.timestamp}${logs.class}${logs.log || ''}`, (loggingCount += 1));
+      logs.arrivedAt = new Date()
+        .toISOString()
+        .split('T')
+        .join(' - ')
+        .slice(0, -1);
+    }
     data.push(logs);
   }
 
@@ -140,17 +196,26 @@ helpers.storeLogs = async (logs) => {
   // Sort the data by timestamp
   // Currently this is based on hour, minute, second and milli-second
   // This needs updating to sort based on month-day-year as well.
+  // This sorts with the newest at the top
   data.sort((a, b) => {
-    const hourA = replaceGlobally(a.timestamp.slice(-12), ':', '');
-    const hourB = replaceGlobally(b.timestamp.slice(-12), ':', '');
-    return hourA - hourB;
+    const hourA = `${replaceGlobally(
+      a.timestamp.slice(-12),
+      ':',
+      ''
+    )}${loggingOrder.get(`${a.timestamp}${a.class}${a.log || ''}`)}`;
+    const hourB = `${replaceGlobally(
+      b.timestamp.slice(-12),
+      ':',
+      ''
+    )}${loggingOrder.get(`${b.timestamp}${b.class}${b.log || ''}`)}`;
+    return hourB - hourA;
   });
 
   // write data that holds existing requests and new request to request.json
   fs.writeFileSync(
     path.resolve(__dirname, DATAFILE),
     JSON.stringify(data, null, 2),
-    "utf8"
+    'utf8'
   );
 
   return data;
@@ -165,9 +230,13 @@ helpers.deleteLogs = async () => {
   const res = await fs.writeFileSync(
     path.resolve(__dirname, DATAFILE),
     JSON.stringify([]),
-    "utf8"
+    'utf8'
   );
   return [];
+};
+
+helpers.killServer = async () => {
+  kill(3861, 'tcp');
 };
 
 // method to create allLogs.json file if the file is not present
@@ -178,13 +247,13 @@ helpers.checkLogFile = async () => {
       fs.writeFileSync(
         path.resolve(__dirname, DATAFILE),
         JSON.stringify([]),
-        "utf8"
+        'utf8'
       );
-      return "log file created";
+      return 'log file created';
     }
 
     // if there's no error
-    return "log file exist";
+    return 'log file exist';
   });
 };
 
