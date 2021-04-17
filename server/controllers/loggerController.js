@@ -1,16 +1,14 @@
-// const { getAllLogs, storeLogs, deleteLogs } = require('../helpers/helpers');
 const Queue = require('../helpers/queue');
-// const { io } = require('../../config');
 
-// const loggerController = {};
 const queue = new Queue();
 const {
   getAllLogs,
   storeLogs,
   deleteLogs,
-  killServer
+  killServer,
 } = require('../helpers/helpers');
-const { io } = require("../../config");
+
+const { io } = require('../../config');
 
 const loggerController = {};
 let pause = false;
@@ -25,30 +23,22 @@ loggerController.getAllLogs = async () => {
 
 loggerController.storeLogs = async (logs) => {
   // Adding a queue with a 1 second delay to facilitate animations
-  queue.enqueue(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(async () => {
-        // Store the new logs
-        const data = { allLogs: await storeLogs(logs) };
-        // Send the new logs to the FE
-        io.emit('display-logs', data);
-        // Send the new logs to the cmd app
-        io.emit('print-logs', logs);
-        // Let users project know logs have been successfully stored
-        io.emit('store-logs', 'success');
-        resolve('OK');
-      }, 1000);
-    });
-  });
   if (!pause) {
-    // Store the new logs
-    const data = { allLogs: await storeLogs(logs) };
-    // Send the new logs to the FE
-    io.emit('display-logs', data);
-    // Send the new logs to the cmd app
-    io.emit('print-logs', logs);
-    // Let users project know logs have been successfully stored
-    io.emit('store-logs', 'success');
+    queue.enqueue(() => {
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          // Store the new logs
+          const data = { allLogs: await storeLogs(logs) };
+          // Send the new logs to the FE
+          io.emit('display-logs', data);
+          // Send the new logs to the cmd app
+          io.emit('print-logs', logs);
+          // Let users project know logs have been successfully stored
+          io.emit('store-logs', 'success');
+          resolve('OK');
+        }, 1000);
+      });
+    });
   }
 };
 
