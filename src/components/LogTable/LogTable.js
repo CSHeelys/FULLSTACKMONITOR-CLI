@@ -17,7 +17,7 @@ export default function LogTable({
   logTypes,
 }) {
   const messengerBlue = useToken('colors', 'messenger.400');
-  const TIMEDIFF_THRESHOLD = 1000;
+  const TIMEDIFF_THRESHOLD = 500;
   // Assign titles dynamically depending on which types of logs the user is viewing
   const [colTitle1, colTitle2, colTitle3, colTitle4] = getHeaderTitles(
     logTypes
@@ -44,7 +44,7 @@ export default function LogTable({
   return (
     <div>
       {showLogs && (
-      <Table colorScheme="facebook" variant="simple">
+      <Table variant="simple">
         <Thead>
           <Tr className="sticky-table">
             <Th>{colTitle1}</Th>
@@ -54,7 +54,6 @@ export default function LogTable({
           </Tr>
         </Thead>
         <Tbody>
-
           {logs.map((log, i) => {
             let styleObj = {};
             if (showMoreLogInfo && activeLog.id === log.id) {
