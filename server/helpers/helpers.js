@@ -133,9 +133,7 @@ helpers.getAllLogs = async () => {
   }
 
   // error handling
-  if (!logs)
-    throw Error('./server/helpers/helpers: getAllLogs: No logs found.');
-
+  if (!logs) throw Error('./server/helpers/helpers: getAllLogs: No logs found.');
   return logs;
 };
 
@@ -170,14 +168,12 @@ helpers.storeLogs = async (logs) => {
           .join(' - ')
           .slice(0, -1);
       }
-      if (!log.arrivedAt) console.log('this one:', log);
       data.push(log);
     });
   } else {
     // if incoming logs are not in array format, push directly into existing data
     if (
-      !loggingOrder.has(`${logs.timestamp}${logs.class}${logs.log || ''}`) ||
-      !logs.arrivedAt
+      !loggingOrder.has(`${logs.timestamp}${logs.class}${logs.log || ''}`) || !logs.arrivedAt
     ) {
       loggingOrder.set(`${logs.timestamp}${logs.class}${logs.log || ''}`, (loggingCount += 1));
       logs.arrivedAt = new Date()
@@ -186,7 +182,6 @@ helpers.storeLogs = async (logs) => {
         .join(' - ')
         .slice(0, -1);
     }
-    if (!logs.arrivedAt) console.log('this one:', logs);
     data.push(logs);
   }
 
