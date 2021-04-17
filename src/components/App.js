@@ -56,7 +56,7 @@ class App extends Component {
     });
 
     socket.on('send-hardware-info', (info) => {
-      console.log(info);
+      // console.log(info);
     });
     socket.emit("get-initial-logs");
     socket.emit('get-cpu-info');
@@ -205,12 +205,12 @@ class App extends Component {
           pause={pause}
           setCheckBoxes={this.setCheckBoxes}
           checkBoxes={checkBoxes}
-          showLogs={showLogs} // TODO: this doesn't do anything
           showCustom={showCustom}
           showDashboard={showDashboard}
           logs={logs}
         />
         <LogTable
+          showLogs={showLogs} // TODO: this doesn't do anything
           logTypes={logTypes}
           activeLog={activeLog}
           logs={logs.filter((log) => logTypes[log.class])}
