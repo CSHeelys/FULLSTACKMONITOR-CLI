@@ -1,41 +1,42 @@
-import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion'
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  useToken
-} from "@chakra-ui/react";
-import Log from "./Log";
-import Request from "./Request";
-import Response from "./Response";
-import { getHeaderTitles } from "../../helpers/helpers";
+import React, { useRef, useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Table, Thead, Tbody, Tfoot, Tr, Th, useToken } from '@chakra-ui/react';
+import Log from './Log';
+import Request from './Request';
+import Response from './Response';
+import { getHeaderTitles } from '../../helpers/helpers';
 
 export default function LogTable({
-  activeLog, showMoreLogInfo, splitView, logs, logTypes
+  activeLog,
+  showMoreLogInfo,
+  splitView,
+  logs,
+  logTypes,
 }) {
-  const messengerBlue = useToken("colors", "messenger.400");
+  const messengerBlue = useToken('colors', 'messenger.400');
+  const TIMEDIFF_THRESHOLD = 1000;
   // Assign titles dynamically depending on which types of logs the user is viewing
-  const [colTitle1, colTitle2, colTitle3, colTitle4] = getHeaderTitles(logTypes);
-  const LogMotion = motion(Log)
-  const RequestMotion = motion(Request)
-  const ResponseMotion = motion(Response)
-  const variants = {
-    hidden: (i) => ({
-      opacity: 0,
-      y: -50 * i,
-    }),
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.025,
-      },
-    }),
-  };
+  const [colTitle1, colTitle2, colTitle3, colTitle4] = getHeaderTitles(
+    logTypes
+  );
+  const LogMotion = motion(Log);
+  const RequestMotion = motion(Request);
+  const ResponseMotion = motion(Response);
+  const hasRenderedRef = useRef(false);
+  const prevCountRef = useRef();
+  let prevCount = useRef();
+
+  useEffect(() => {
+    prevCountRef.current = logs.length;
+    if (logs.length > 0) {
+      hasRenderedRef.current = true;
+    } else {
+      hasRenderedRef.current = false;
+      prevCountRef.current = 0;
+    }
+  }, [logs]);
+
+  prevCount.current = prevCountRef.current;
 
   return (
     <Table colorScheme="facebook" variant="simple">
@@ -48,89 +49,231 @@ export default function LogTable({
         </Tr>
       </Thead>
       <Tbody>
+        
         {logs.map((log, i) => {
           let styleObj = {};
           if (showMoreLogInfo && activeLog.id === log.id) {
             styleObj = {
               backgroundColor: messengerBlue,
-              color: 'white'
+              color: 'white',
             };
           }
           switch (log.class) {
-            case "client":
-            case "server":
+            case 'client':
+            case 'server':
               return (
-                <AnimatePresence>
-                <LogMotion
-                  styleObj={styleObj}
-                  variants={{hidden: (i) => ({
-                    opacity: 0,
-                    y: -50 * i,
-                  }),
-                  visible: (i) => ({
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: i * 0.025,
-                    },
-                  })}}
-                  initial="hidden"
-                  animate="visible"
-                  custom={i}
-                  log={log}
-                  key={`${log.class}${log.type}${log.timestamp}${log.log}`}
-                  splitView={() => splitView(log.id)}
-                />
+                <AnimatePresence exitBeforeEnter>
+                  <LogMotion
+                    styleObj={styleObj}
+                    variants={{
+                      initialHidden: (i) => {
+                        return {
+                          opacity: 0,
+                          y: -50 * i,
+                        };
+                      },
+                      initialVisible: (i) => ({
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: 0.025 * i,
+                        },
+                      }),
+                      loadedHidden: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 0,
+                          };
+                        } else {
+                          return {
+                            opacity: 1,
+                          };
+                        }
+                      },
+                      loadedVisible: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 1,
+                            transition: {
+                              delay: Math.abs(i - logs.length) * 0.05,
+                            },
+                          };
+                        } else {
+                          return { opacity: 1 };
+                        }
+                      },
+                    }}
+                    initial={
+                      hasRenderedRef.current ? 'loadedHidden' : 'initialHidden'
+                    }
+                    animate={
+                      hasRenderedRef.current
+                        ? 'loadedVisible'
+                        : 'initialVisible'
+                    }
+                    custom={i}
+                    log={log}
+                    key={`${log.class}${log.type}${log.timestamp}${log.log}`}
+                    splitView={() => splitView(log.id)}
+                  />
                 </AnimatePresence>
               );
-            case "request":
+            case 'request':
               return (
                 <AnimatePresence>
-                <RequestMotion
-                  styleObj={styleObj}
-                  variants={{hidden: (i) => ({
-                    opacity: 0,
-                    y: -50 * i,
-                  }),
-                  visible: (i) => ({
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: i * 0.025,
-                    },
-                  })}}
-                  initial="hidden"
-                  animate="visible"
-                  custom={i}
-                  request={log}
-                  key={`${log.class}${log.method}${log.timestamp}${log.originalUri}`}
-                  splitView={() => splitView(log.id)}
-                />
+                  <RequestMotion
+                    styleObj={styleObj}
+                    variants={{
+                      initialHidden: (i) => {
+                        return {
+                          opacity: 0,
+                          y: -50 * i,
+                        };
+                      },
+                      initialVisible: (i) => ({
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: i * 0.025,
+                        },
+                      }),
+                      loadedHidden: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 0,
+                          };
+                        } else {
+                          return {
+                            opacity: 1,
+                          };
+                        }
+                      },
+                      loadedVisible: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 1,
+                            transition: {
+                              delay: Math.abs(i - logs.length) * 0.025,
+                            },
+                          };
+                        } else {
+                          return { opacity: 1 };
+                        }
+                      },
+                    }}
+                    initial={
+                      hasRenderedRef.current ? 'loadedHidden' : 'initialHidden'
+                    }
+                    animate={
+                      hasRenderedRef.current
+                        ? 'loadedVisible'
+                        : 'initialVisible'
+                    }
+                    custom={i}
+                    request={log}
+                    key={`${log.class}${log.method}${log.timestamp}${log.originalUri}`}
+                    splitView={() => splitView(log.id)}
+                  />
                 </AnimatePresence>
               );
-            case "response":
+            case 'response':
               return (
                 <AnimatePresence>
-                <ResponseMotion
-                  styleObj={styleObj}
-                  response={log}
-                  variants={{hidden: (i) => ({
-                    opacity: 0,
-                    y: -50 * i,
-                  }),
-                  visible: (i) => ({
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: i * 0.025,
-                    },
-                  })}}
-                  initial="hidden"
-                  animate="visible"
-                  custom={i}
-                  key={`${log.class}${log.responseStatus}${log.timestamp}`}
-                  splitView={() => splitView(log.id)}
-                />
+                  <ResponseMotion
+                    styleObj={styleObj}
+                    response={log}
+                    variants={{
+                      initialHidden: (i) => {
+                        return {
+                          opacity: 0,
+                          y: -50 * i,
+                        };
+                      },
+                      initialVisible: (i) => ({
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: i * 0.025,
+                        },
+                      }),
+                      loadedHidden: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 0,
+                          };
+                        } else {
+                          return {
+                            opacity: 1,
+                          };
+                        }
+                      },
+                      loadedVisible: (i) => {
+                        const timeDiff =
+                          Date.parse(new Date().toISOString()) -
+                          Date.parse(
+                            new Date(
+                              `${log.arrivedAt.replace(' - ', 'T')}Z`
+                            ).toISOString()
+                          );
+                        if (Math.abs(timeDiff) < TIMEDIFF_THRESHOLD) {
+                          return {
+                            opacity: 1,
+                            transition: {
+                              delay: Math.abs(i - logs.length) * 0.025,
+                            },
+                          };
+                        } else {
+                          return { opacity: 1 };
+                        }
+                      },
+                    }}
+                    initial={
+                      hasRenderedRef.current ? 'loadedHidden' : 'initialHidden'
+                    }
+                    animate={
+                      hasRenderedRef.current
+                        ? 'loadedVisible'
+                        : 'initialVisible'
+                    }
+                    custom={i}
+                    key={`${log.class}${log.responseStatus}${log.timestamp}`}
+                    splitView={() => splitView(log.id)}
+                  />
                 </AnimatePresence>
               );
             default:

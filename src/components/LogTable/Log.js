@@ -8,7 +8,7 @@ import {
 function Log({ log, splitView, styleObj }, ref) {
   const { timestamp, class: classType, type, log: logData } = log;
   return (
-      <tr
+      <Tr
         onClick={splitView}
         style={styleObj}
         ref={ref}
@@ -17,7 +17,7 @@ function Log({ log, splitView, styleObj }, ref) {
         <Td>{capitalizeFirstLetter(classType)}</Td>
         <Td>{capitalizeFirstLetter(type)}</Td>
         <Td>{sanitizeAndShortenLogData(logData)}</Td>
-      </tr>
+      </Tr>
   );
 }
 
