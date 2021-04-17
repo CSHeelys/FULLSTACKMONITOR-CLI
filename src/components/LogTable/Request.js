@@ -16,22 +16,22 @@ function Request({ request, splitView, styleObj }, ref) {
   } = request;
 
   return (
-      <Tr
-        onClick={splitView}
-        style={styleObj}
-        ref={ref}
-      >
-        <Td>{timestamp}</Td>
-        <Td>
-          <ArrowForwardIcon color="green.300" marginBottom="2px" />
-          {` ${method} ${capitalizeFirstLetter(classType)}`}
-        </Td>
-        <Td>{originalUri}</Td>
-        <Td>{sanitizeAndShortenRequestResponseData(requestData)}</Td>
-      </Tr>
+    <Tr
+      onClick={splitView}
+      style={styleObj}
+      ref={ref}
+    >
+      <Td>{timestamp}</Td>
+      <Td>
+        <ArrowForwardIcon color="green.300" marginBottom="2px" />
+        {` ${method} ${capitalizeFirstLetter(classType)}`}
+      </Td>
+      <Td>{originalUri}</Td>
+      <Td>{sanitizeAndShortenRequestResponseData(requestData)}</Td>
+    </Tr>
   );
 }
 
-const forwardedRequest = React.forwardRef(Request)
+const forwardedRequest = React.forwardRef(Request);
 
-export default forwardedRequest
+export default forwardedRequest;

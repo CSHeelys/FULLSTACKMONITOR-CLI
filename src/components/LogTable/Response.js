@@ -9,11 +9,11 @@ function Response({ response, splitView, styleObj }, ref) {
   } = response;
 
   return (
-      <Tr
-        onClick={splitView}
-        style={styleObj}
-        ref={ref}
-      >
+    <Tr
+      onClick={splitView}
+      style={styleObj}
+      ref={ref}
+    >
       <Td>{timestamp}</Td>
       <Td>
         <ArrowBackIcon color="green.300" marginBottom="2px" />
@@ -25,6 +25,6 @@ function Response({ response, splitView, styleObj }, ref) {
   );
 }
 
-const forwardedResponse = React.forwardRef(Response)
+const forwardedResponse = React.forwardRef(Response);
 
-export default forwardedResponse
+export default forwardedResponse;
