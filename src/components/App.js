@@ -93,7 +93,8 @@ class App extends Component {
   };
 
   updateHardwareInfo = (newInfo) => {
-    const newHardwareInfo = this.state.hardwareInfo.concat(newInfo);
+    const { hardwareInfo } = this.state;
+    const newHardwareInfo = hardwareInfo.concat(newInfo);
     this.setState({
       hardwareInfo: newHardwareInfo,
     });

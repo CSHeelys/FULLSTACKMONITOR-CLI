@@ -133,27 +133,37 @@ class Dashboard extends React.Component {
       new Date().toISOString().split("T").join(" ")
         .slice(0, -1)
     );
-    const currentTime = new Date(
-      Math.floor(currentTimeUnrounded.getTime() / this.state.coeff)
-        * this.state.coeff
-    );
+    const currentTime = new Date(Math.floor(currentTimeUnrounded.getTime() / this.state.coeff) * this.state.coeff);
 
-    const tempTimes = this.state.times;
-    const lastTime = tempTimes[tempTimes.length - 1];
+    const {
+      times,
+      dataClient,
+      dataServer,
+      dataRequests,
+      dataCPU,
+      dataMem,
+      aggdata,
+      cpuTotal,
+      memTotal,
+      hardwareCount
+    } = this.state;
 
-    console.log('logs: ', this.props.logs);
+    // const times = this.state.times;
+    const lastTime = times[times.length - 1];
 
-    const tempDataClient = this.state.dataClient;
-    const tempDataServer = this.state.dataServer;
-    const tempDataRequests = this.state.dataRequests;
-    const tempDataCPU = this.state.dataCPU;
-    const tempDataMem = this.state.dataMem;
+    // console.log('logs: ', this.props.logs);
 
-    const transformedData = this.state.aggdata;
+    // const dataClient = this.state.dataClient;
+    // const dataServer = this.state.dataServer;
+    // const dataRequests = this.state.dataRequests;
+    // const dataCPU = this.state.dataCPU;
+    // const dataMem = this.state.dataMem;
 
-    const tempCPUTotal = this.state.cpuTotal;
-    const tempMemTotal = this.state.memTotal;
-    const tempHardwareCount = this.state.hardwareCount;
+    // const aggdata = this.state.aggdata;
+
+    // const cpuTotal = this.state.cpuTotal;
+    // const memTotal = this.state.memTotal;
+    // const hardwareCount = this.state.hardwareCount;
 
     // sort reverse
     const logsCopy = [...this.props.logs];
@@ -183,17 +193,17 @@ class Dashboard extends React.Component {
         ) * this.state.coeff
       );
 
-      if (!transformedData[timestamp]) {
+      if (!aggdata[timestamp]) {
         // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
-        transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
+        aggdata[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
       if (logsCopy[i].class === "client") {
-        transformedData[timestamp][0] += 1;
+        aggdata[timestamp][0] += 1;
       } else if (logsCopy[i].class === "server") {
-        transformedData[timestamp][1] += 1;
+        aggdata[timestamp][1] += 1;
       } else if (logsCopy[i].class === "request") {
-        transformedData[timestamp][2] += 1;
+        aggdata[timestamp][2] += 1;
       }
     }
 
@@ -206,49 +216,49 @@ class Dashboard extends React.Component {
         ) * this.state.coeff
       );
 
-      if (!transformedData[timestamp]) {
+      if (!aggdata[timestamp]) {
         // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
-        transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
+        aggdata[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
-      transformedData[timestamp][5] += this.props.hardwareInfo[i].cpuUsage;
-      transformedData[timestamp][6] += this.props.hardwareInfo[i].memPercent;
-      transformedData[timestamp][7] += 1;
-      transformedData[timestamp][3] = transformedData[timestamp][5] / transformedData[timestamp][7];
-      transformedData[timestamp][4] = transformedData[timestamp][6] / transformedData[timestamp][7];
+      aggdata[timestamp][5] += this.props.hardwareInfo[i].cpuUsage;
+      aggdata[timestamp][6] += this.props.hardwareInfo[i].memPercent;
+      aggdata[timestamp][7] += 1;
+      aggdata[timestamp][3] = aggdata[timestamp][5] / aggdata[timestamp][7];
+      aggdata[timestamp][4] = aggdata[timestamp][6] / aggdata[timestamp][7];
     }
 
     // compare if another minute has passed yet
     // TODO: refactor, see if there's a better way than regenerating
     if (currentTime > lastTime) {
-      tempTimes.push(currentTime);
-      tempTimes.shift();
+      times.push(currentTime);
+      times.shift();
 
-      if (!transformedData[currentTime]) {
-        tempDataClient.push(0);
-        tempDataServer.push(0);
-        tempDataRequests.push(0);
-        tempDataCPU.push(0);
-        tempDataMem.push(0);
+      if (!aggdata[currentTime]) {
+        dataClient.push(0);
+        dataServer.push(0);
+        dataRequests.push(0);
+        dataCPU.push(0);
+        dataMem.push(0);
       } else {
-        tempDataClient.push(transformedData[currentTime][0]);
-        tempDataServer.push(transformedData[currentTime][1]);
-        tempDataRequests.push(transformedData[currentTime][2]);
-        tempDataCPU.push(transformedData[currentTime][3]);
-        tempDataMem.push(transformedData[currentTime][4]);
+        dataClient.push(aggdata[currentTime][0]);
+        dataServer.push(aggdata[currentTime][1]);
+        dataRequests.push(aggdata[currentTime][2]);
+        dataCPU.push(aggdata[currentTime][3]);
+        dataMem.push(aggdata[currentTime][4]);
       }
 
-      tempDataClient.shift();
-      tempDataServer.shift();
-      tempDataRequests.shift();
-      tempDataCPU.shift();
-      tempDataMem.shift();
-    } else if (transformedData[lastTime]) {
-      tempDataClient[tempDataClient.length - 1] = transformedData[lastTime][0];
-      tempDataServer[tempDataServer.length - 1] = transformedData[lastTime][1];
-      tempDataRequests[tempDataRequests.length - 1] = transformedData[lastTime][2];
-      tempDataCPU[tempDataCPU.length - 1] = transformedData[lastTime][3];
-      tempDataMem[tempDataMem.length - 1] = transformedData[lastTime][4];
+      dataClient.shift();
+      dataServer.shift();
+      dataRequests.shift();
+      dataCPU.shift();
+      dataMem.shift();
+    } else if (aggdata[lastTime]) {
+      dataClient[dataClient.length - 1] = aggdata[lastTime][0];
+      dataServer[dataServer.length - 1] = aggdata[lastTime][1];
+      dataRequests[dataRequests.length - 1] = aggdata[lastTime][2];
+      dataCPU[dataCPU.length - 1] = aggdata[lastTime][3];
+      dataMem[dataMem.length - 1] = aggdata[lastTime][4];
     }
 
     // console.log('transformedData: ', transformedData);
@@ -256,13 +266,13 @@ class Dashboard extends React.Component {
     // update state
     this.setState(
       {
-        times: tempTimes,
-        dataClient: tempDataClient,
-        dataServer: tempDataServer,
-        dataRequests: tempDataRequests,
-        dataCPU: tempDataCPU,
-        dataMem: tempDataMem,
-        aggdata: transformedData,
+        times,
+        dataClient,
+        dataServer,
+        dataRequests,
+        dataCPU,
+        dataMem,
+        aggdata,
         cursorLogs: logsCopy.length,
         cursorHardware: this.props.hardwareInfo.length,
       },

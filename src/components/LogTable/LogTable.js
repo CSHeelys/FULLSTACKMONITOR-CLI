@@ -70,18 +70,18 @@ export default function LogTable({
                     <LogMotion
                       styleObj={styleObj}
                       variants={{
-                        initialHidden: (i) => ({
+                        initialHidden: () => ({
                           opacity: 0,
                           y: -50 * i,
                         }),
-                        initialVisible: (i) => ({
+                        initialVisible: () => ({
                           opacity: 1,
                           y: 0,
                           transition: {
                             delay: 0.025 * i,
                           },
                         }),
-                        loadedHidden: (i) => {
+                        loadedHidden: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
@@ -97,7 +97,7 @@ export default function LogTable({
                             opacity: 1,
                           };
                         },
-                        loadedVisible: (i) => {
+                        loadedVisible: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
@@ -136,18 +136,18 @@ export default function LogTable({
                     <RequestMotion
                       styleObj={styleObj}
                       variants={{
-                        initialHidden: (i) => ({
+                        initialHidden: () => ({
                           opacity: 0,
                           y: -50 * i,
                         }),
-                        initialVisible: (i) => ({
+                        initialVisible: () => ({
                           opacity: 1,
                           y: 0,
                           transition: {
                             delay: i * 0.025,
                           },
                         }),
-                        loadedHidden: (i) => {
+                        loadedHidden: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
@@ -163,7 +163,7 @@ export default function LogTable({
                             opacity: 1,
                           };
                         },
-                        loadedVisible: (i) => {
+                        loadedVisible: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
@@ -203,18 +203,18 @@ export default function LogTable({
                       styleObj={styleObj}
                       response={log}
                       variants={{
-                        initialHidden: (i) => ({
+                        initialHidden: () => ({
                           opacity: 0,
                           y: -50 * i,
                         }),
-                        initialVisible: (i) => ({
+                        initialVisible: () => ({
                           opacity: 1,
                           y: 0,
                           transition: {
                             delay: i * 0.025,
                           },
                         }),
-                        loadedHidden: (i) => {
+                        loadedHidden: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
@@ -230,7 +230,7 @@ export default function LogTable({
                             opacity: 1,
                           };
                         },
-                        loadedVisible: (i) => {
+                        loadedVisible: () => {
                           const timeDiff = Date.parse(new Date().toISOString())
                           - Date.parse(
                             new Date(
