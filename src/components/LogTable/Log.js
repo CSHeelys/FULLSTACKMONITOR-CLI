@@ -1,13 +1,20 @@
-import React from "react";
-import { Tr, Td } from "@chakra-ui/react";
-import { sanitizeAndShortenLogData, capitalizeFirstLetter } from "../../helpers/helpers";
+import React from 'react';
+import { Tr, Td } from '@chakra-ui/react';
+import {
+  sanitizeAndShortenLogData,
+  capitalizeFirstLetter,
+} from '../../helpers/helpers';
 
-export default function Log({ log, splitView, styleObj }) {
+function Log({ log, splitView, styleObj }, ref) {
   const {
     timestamp, class: classType, type, log: logData
   } = log;
   return (
-    <Tr onClick={splitView} style={styleObj}>
+    <Tr
+      onClick={splitView}
+      style={styleObj}
+      ref={ref}
+    >
       <Td>{timestamp}</Td>
       <Td>{capitalizeFirstLetter(classType)}</Td>
       <Td>{capitalizeFirstLetter(type)}</Td>
@@ -15,3 +22,7 @@ export default function Log({ log, splitView, styleObj }) {
     </Tr>
   );
 }
+
+const forwardedLog = React.forwardRef(Log);
+
+export default forwardedLog;
