@@ -13,14 +13,17 @@ class Dashboard extends React.Component {
       dataClient: [],
       dataServer: [],
       dataRequests: [],
+      dataCPU: [],
+      dataMem: [],
       aggdata: {},
-      cursor: 0,
+      cursorLogs: 0,
+      cursorHardware: 0,
       coeff: 60000,
     };
 
     this.initializeData = this.initializeData.bind(this);
     this.updateData = this.updateData.bind(this);
-    this.createGraph = this.createGraph.bind(this);
+    this.createGraphs = this.createGraphs.bind(this);
   }
 
   componentDidMount() {
@@ -46,7 +49,6 @@ class Dashboard extends React.Component {
     }
 
     // aggregating log data
-    // TODO: feature for CPU / memory use
     const transformedData = {};
 
     for (let i = 0; i < this.props.logs.length; i++) {
@@ -57,7 +59,8 @@ class Dashboard extends React.Component {
         ) * this.state.coeff
       );
       if (!transformedData[timestamp]) {
-        transformedData[timestamp] = [0, 0, 0];
+        // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
+        transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
       if (this.props.logs[i].class === "client") {
@@ -73,7 +76,8 @@ class Dashboard extends React.Component {
     const tempDataClient = [];
     const tempDataServer = [];
     const tempDataRequests = [];
-    // const tempCPUUsage = [];
+    const tempDataCPU = [];
+    const tempDataMem = [];
 
     for (let i = 0; i < tempTimes.length; i++) {
       if (!transformedData[tempTimes[i]]) {
@@ -85,6 +89,9 @@ class Dashboard extends React.Component {
         tempDataServer.push(transformedData[tempTimes[i]][1]);
         tempDataRequests.push(transformedData[tempTimes[i]][2]);
       }
+
+      tempDataCPU.push(0);
+      tempDataMem.push(0);
     }
 
     // update state
@@ -94,11 +101,13 @@ class Dashboard extends React.Component {
         dataClient: tempDataClient,
         dataServer: tempDataServer,
         dataRequests: tempDataRequests,
+        dataCPU: tempDataCPU,
+        dataMem: tempDataMem,
         aggdata: transformedData,
-        cursor: this.props.logs.length,
+        cursorLogs: this.props.logs.length,
       },
       () => {
-        this.createGraph();
+        this.createGraphs();
       }
     );
   }
@@ -120,11 +129,17 @@ class Dashboard extends React.Component {
     const tempDataClient = this.state.dataClient;
     const tempDataServer = this.state.dataServer;
     const tempDataRequests = this.state.dataRequests;
+    const tempDataCPU = this.state.dataCPU;
+    const tempDataMem = this.state.dataMem;
 
     const transformedData = this.state.aggdata;
 
+    const tempCPUTotal = this.state.cpuTotal;
+    const tempMemTotal = this.state.memTotal;
+    const tempHardwareCount = this.state.hardwareCount;
+
     // get latest logs
-    for (let i = this.state.cursor; i < this.props.logs.length; i++) {
+    for (let i = this.state.cursorLogs; i < this.props.logs.length; i++) {
       const timestamp = new Date(
         Math.floor(
           new Date(this.props.logs[i].timestamp.replace(" - ", " ")).getTime()
@@ -133,7 +148,8 @@ class Dashboard extends React.Component {
       );
 
       if (!transformedData[timestamp]) {
-        transformedData[timestamp] = [0, 0, 0];
+        // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
+        transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
       }
 
       if (this.props.logs[i].class === "client") {
@@ -145,8 +161,32 @@ class Dashboard extends React.Component {
       }
     }
 
+    // get latest hardware info
+    for (let i = this.state.cursorHardware; i < this.props.hardwareInfo.length; i++) {
+      const timestamp = new Date(
+        Math.floor(
+          new Date(this.props.hardwareInfo[i].timestamp.replace(" - ", " ")).getTime()
+            / this.state.coeff
+        ) * this.state.coeff
+      );
+
+      if (!transformedData[timestamp]) {
+        // client, server, request, cpu, mem, totalcpu, totalmem, hardware count
+        transformedData[timestamp] = [0, 0, 0, 0, 0, 0, 0, 0];
+      }
+
+      console.log('cpu ', this.props.hardwareInfo[i].cpuUsage);
+      console.log('mem ', this.props.hardwareInfo[i].memPercent);
+
+      transformedData[timestamp][5] += this.props.hardwareInfo[i].cpuUsage;
+      transformedData[timestamp][6] += this.props.hardwareInfo[i].memPercent;
+      transformedData[timestamp][7] += 1;
+      transformedData[timestamp][3] = transformedData[timestamp][5] / transformedData[timestamp][7];
+      transformedData[timestamp][4] = transformedData[timestamp][6] / transformedData[timestamp][7];
+    }
+
     // compare if another minute has passed yet
-    // TODO: see if there's a better way than regenerating
+    // TODO: refactor, see if there's a better way than regenerating
     if (currentTime > lastTime) {
       tempTimes.push(currentTime);
       tempTimes.shift();
@@ -155,20 +195,30 @@ class Dashboard extends React.Component {
         tempDataClient.push(0);
         tempDataServer.push(0);
         tempDataRequests.push(0);
+        tempDataCPU.push(0);
+        tempDataMem.push(0);
       } else {
         tempDataClient.push(transformedData[currentTime][0]);
         tempDataServer.push(transformedData[currentTime][1]);
         tempDataRequests.push(transformedData[currentTime][2]);
+        tempDataCPU.push(transformedData[currentTime][3]);
+        tempDataMem.push(transformedData[currentTime][4]);
       }
 
       tempDataClient.shift();
       tempDataServer.shift();
       tempDataRequests.shift();
+      tempDataCPU.shift();
+      tempDataMem.shift();
     } else if (transformedData[lastTime]) {
       tempDataClient[tempDataClient.length - 1] = transformedData[lastTime][0];
       tempDataServer[tempDataServer.length - 1] = transformedData[lastTime][1];
       tempDataRequests[tempDataRequests.length - 1] = transformedData[lastTime][2];
+      tempDataCPU[tempDataCPU.length - 1] = transformedData[lastTime][3];
+      tempDataMem[tempDataMem.length - 1] = transformedData[lastTime][4];
     }
+
+    // console.log('transformedData: ', transformedData);
 
     // update state
     this.setState(
@@ -177,17 +227,20 @@ class Dashboard extends React.Component {
         dataClient: tempDataClient,
         dataServer: tempDataServer,
         dataRequests: tempDataRequests,
+        dataCPU: tempDataCPU,
+        dataMem: tempDataMem,
         aggdata: transformedData,
-        cursor: this.props.logs.length,
+        cursorLogs: this.props.logs.length,
+        cursorHardware: this.props.hardwareInfo.length,
       },
       () => {
-        this.createGraph();
+        this.createGraphs();
       }
     );
   }
 
-  createGraph() {
-    const ctx = document.getElementById("line-graph").getContext("2d");
+  createGraphs() {
+    const ctx = document.getElementById("logs-graph").getContext("2d");
 
     const chart = new Chart(ctx, {
       type: "line",
@@ -228,7 +281,54 @@ class Dashboard extends React.Component {
         title: {
           display: true,
           position: "top",
-          text: "Logs and Requests in the Last 30 Minutes",
+          text: "Logs and Requests in the Last 30 Minutes (UTC)",
+          fontSize: 20,
+        },
+      },
+    });
+
+    const cty = document.getElementById("cpu-graph").getContext("2d");
+
+    const charty = new Chart(cty, {
+      type: "line",
+      data: {
+        labels: this.state.times,
+        datasets: [
+          {
+            label: "CPU",
+            backgroundColor: "#f9aeae62",
+            borderColor: "#FF6384",
+            data: this.state.dataCPU,
+          },
+          {
+            label: "Memory",
+            backgroundColor: "#99ccff",
+            borderColor: "#3399ff",
+            data: this.state.dataMem,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+            },
+          ],
+          yAxes: [
+            {
+              min: 0,
+              max: 1
+            }
+          ]
+        },
+        animation: {
+          duration: 0,
+        },
+        title: {
+          display: true,
+          position: "top",
+          text: "CPU and Memory Usage in the Last 30 Minutes (UTC)",
           fontSize: 20,
         },
       },
@@ -238,7 +338,12 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="dashboard">
-        <canvas id="line-graph" />
+        <div className="graph">
+          <canvas id="logs-graph" />
+        </div>
+        <div className="graph">
+          <canvas id="cpu-graph" />
+        </div>
       </div>
     );
   }

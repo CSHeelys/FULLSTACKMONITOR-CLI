@@ -22,6 +22,7 @@ class App extends Component {
         transports: ["websocket"],
       }),
       logs: [],
+      hardwareInfo: [],
       showMoreLogInfo: false, // switch every time you clickit
       activeLog: {},
       // logTypes object determines which types of logs render on the page
@@ -56,7 +57,7 @@ class App extends Component {
     });
 
     socket.on('send-hardware-info', (info) => {
-      // console.log(info);
+      this.updateHardwareInfo(info);
     });
     socket.emit("get-initial-logs");
     socket.emit('get-cpu-info');
@@ -90,6 +91,13 @@ class App extends Component {
     const { socket } = this.state;
     socket.emit("delete-logs", true);
   };
+
+  updateHardwareInfo = (newInfo) => {
+    const newHardwareInfo = this.state.hardwareInfo.concat(newInfo);
+    this.setState({
+      hardwareInfo: newHardwareInfo,
+    });
+  }
 
   killServer = () => {
     // console.log('kill-server');
@@ -175,6 +183,7 @@ class App extends Component {
   render() {
     const {
       logs,
+      hardwareInfo,
       showMoreLogInfo,
       showLogs,
       showCustom,
@@ -208,9 +217,10 @@ class App extends Component {
           showCustom={showCustom}
           showDashboard={showDashboard}
           logs={logs}
+          hardwareInfo={hardwareInfo}
         />
         <LogTable
-          showLogs={showLogs} // TODO: this doesn't do anything
+          showLogs={showLogs}
           logTypes={logTypes}
           activeLog={activeLog}
           logs={logs.filter((log) => logTypes[log.class])}

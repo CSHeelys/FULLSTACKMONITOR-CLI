@@ -7,6 +7,7 @@ export default function IntelligentHeader({
   filterLogs,
   deleteLogs,
   logs,
+  hardwareInfo,
   killServer,
   togglePause,
   pause,
@@ -33,6 +34,7 @@ export default function IntelligentHeader({
       {showDashboard && (
         <Dashboard
           logs={logs}
+          hardwareInfo={hardwareInfo}
         />
       )}
     </div>

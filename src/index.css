@@ -5,4 +5,12 @@
 
 .dashboard {
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.graph {
+  width: 50%;
+  height: 50%;
 }
