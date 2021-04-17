@@ -36,7 +36,7 @@ loggerController.storeLogs = async (logs) => {
           // Let users project know logs have been successfully stored
           io.emit('store-logs', 'success');
           resolve('OK');
-        }, 1000);
+        }, 0);
       });
     });
   }
