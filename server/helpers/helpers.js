@@ -170,7 +170,6 @@ helpers.storeLogs = async (logs) => {
           .join(' - ')
           .slice(0, -1);
       }
-      if (!log.arrivedAt) console.log('this one:', log);
       data.push(log);
     });
   } else {
@@ -186,7 +185,6 @@ helpers.storeLogs = async (logs) => {
         .join(' - ')
         .slice(0, -1);
     }
-    if (!logs.arrivedAt) console.log('this one:', logs);
     data.push(logs);
   }
 

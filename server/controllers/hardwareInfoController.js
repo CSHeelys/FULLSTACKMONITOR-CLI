@@ -4,7 +4,6 @@ const { io } = require("../../config");
 const hardwareInfoController = {};
 
 hardwareInfoController.getCPUInfo = async () => {
-  const stats = {};
   setInterval(() => {
     os.cpuUsage((v) => {
       const stats = {
@@ -19,9 +18,7 @@ hardwareInfoController.getCPUInfo = async () => {
     });
   }, 2000);
 };
-
 hardwareInfoController.getMemInfo = async () => {
-
 };
 
 module.exports = hardwareInfoController;
